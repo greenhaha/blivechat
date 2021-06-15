@@ -4,10 +4,10 @@
   >
     <ticker class="style-scope yt-live-chat-renderer" :messages="paidMessages" :showGiftName="showGiftName"></ticker>
     <yt-live-chat-item-list-renderer class="style-scope yt-live-chat-renderer" allow-scroll>
-      <div ref="scroller" id="item-scroller" class="style-scope yt-live-chat-item-list-renderer animated" @scroll="onScroll">
-        <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="height: 0px;">
-          <div ref="items" id="items" class="style-scope yt-live-chat-item-list-renderer" style="overflow: hidden"
-            :style="{transform: `translateY(${Math.floor(scrollPixelsRemaining)}px)`}"
+      <div ref="scroller" id="item-scroller" class="style-scope yt-live-chat-item-list-renderer animated"  @scroll="onScroll">
+        <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="width: 0px;">
+          <div ref="items" id="items" class="style-scope yt-live-chat-item-list-renderer" style="overflow: scroll"
+          :style="{transform: `translateX(${Math.floor(scrollPixelsRemaining)}px)`}"
           >
             <template v-for="message in messages">
               <text-message :key="message.id" v-if="message.type === MESSAGE_TYPE_TEXT"
@@ -62,7 +62,7 @@ const MESSAGE_MAX_INTERVAL = 1000
 // 84 = ceil((1000 / 60) * 5)
 const CHAT_SMOOTH_ANIMATION_TIME_MS = 86
 // 滚动条距离底部小于多少像素则认为在底部
-const SCROLLED_TO_BOTTOM_EPSILON = 15
+const SCROLLED_TO_BOTTOM_EPSILON = 20
 
 export default {
   name: 'ChatRenderer',
@@ -111,7 +111,7 @@ export default {
       estimatedEnqueueInterval: null,      // 估计的下次进队列时间间隔
 
       messagesBuffer: [],                  // 暂时未显示的消息，当不能自动滚动时会积压在这
-      preinsertHeight: 0,                  // 插入新消息之前items的高度
+      preinsertWidth: 0,                   //* 插入新消息之前items的宽度
       isSmoothed: true,                    // 是否平滑滚动，当消息太快时不平滑滚动
       chatRateMs: 1000,                    // 用来计算消息速度
       scrollPixelsRemaining: 0,            // 平滑滚动剩余像素
@@ -241,7 +241,7 @@ export default {
       this.lastSmoothScrollUpdate = null
       this.scrollTimeRemainingMs = this.scrollPixelsRemaining = 0
       this.smoothScrollRafHandle = null
-      this.preinsertHeight = 0
+      this.preinsertWidth = 0
       this.maybeResizeScrollContainer()
       if (!this.atBottom) {
         this.scrollToBottom()
@@ -464,7 +464,7 @@ export default {
         await this.$nextTick()
       }
 
-      this.preinsertHeight = this.$refs.items.clientHeight
+      this.preinsertWidth = this.$refs.items.clientWidth
       for (let message of this.messagesBuffer) {
         this.messages.push(message)
       }
@@ -474,14 +474,14 @@ export default {
       this.showNewMessages()
     },
     showNewMessages() {
-      let hasScrollBar = this.$refs.items.clientHeight > this.$refs.scroller.clientHeight
-      this.$refs.itemOffset.style.height = `${this.$refs.items.clientHeight}px`
+      let hasScrollBar = this.$refs.items.clientWidth > this.$refs.scroller.clientWidth
+      this.$refs.itemOffset.style.width = `${this.$refs.items.clientWidth}px`
       if (!this.canScrollToBottomOrTimedOut() || !hasScrollBar) {
         return
       }
 
       // 计算剩余像素
-      this.scrollPixelsRemaining += this.$refs.items.clientHeight - this.preinsertHeight
+      this.scrollPixelsRemaining += this.$refs.items.clientWidth - this.preinsertWidth
       this.scrollToBottom()
 
       // 计算是否平滑滚动、剩余时间
@@ -516,7 +516,7 @@ export default {
 
       let interval = time - this.lastSmoothScrollUpdate
       if (
-        this.scrollPixelsRemaining <= 0 || this.scrollPixelsRemaining >= 400  // 已经滚动到底部或者离底部太远则结束
+        this.scrollPixelsRemaining <= 0 || this.scrollPixelsRemaining >= 450  // 已经滚动到底部或者离底部太远则结束
         || interval >= 1000 // 离上一帧时间太久，可能用户切换到其他网页
         || this.scrollTimeRemainingMs <= 0 // 时间已结束
       ) {
@@ -546,7 +546,7 @@ export default {
     },
 
     maybeResizeScrollContainer() {
-      this.$refs.itemOffset.style.height = `${this.$refs.items.clientHeight}px`
+      this.$refs.itemOffset.style.width = `${this.$refs.items.clientWidth}px`
       this.maybeScrollToBottom()
     },
     maybeScrollToBottom() {
@@ -555,13 +555,14 @@ export default {
       }
     },
     scrollToBottom() {
-      this.$refs.scroller.scrollTop = Math.pow(2, 24)
+      // * 修改为向左滑动，看到页面更右侧的部分
+      this.$refs.scroller.scrollLeft = Math.pow(2, 24)
       this.atBottom = true
     },
     onScroll() {
       this.refreshCantScrollStartTime()
       let scroller = this.$refs.scroller
-      this.atBottom = scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < SCROLLED_TO_BOTTOM_EPSILON
+      this.atBottom = scroller.scrollWidth - scroller.scrollLeft - scroller.clientWidth < SCROLLED_TO_BOTTOM_EPSILON
       this.flushMessagesBuffer()
     },
     canScrollToBottomOrTimedOut() {

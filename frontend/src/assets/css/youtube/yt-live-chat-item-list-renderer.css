@@ -110,6 +110,20 @@ yt-live-chat-item-list-renderer[allow-scroll] #item-scroller.yt-live-chat-item-l
   flex-basis: 0.000000001px;
   padding: var(--yt-live-chat-item-list-renderer-padding, 4px 0);
 }
+/** 消息竖直排列  */
+#items.yt-live-chat-item-list-renderer {
+  /* height: 2000px !important; */
+  display: flex;
+  flex-direction: column-reverse;
+  align-content: center;
+  justify-content: center;
+  /* 去除下一行变为最长状态 */
+  align-items: flex-start;
+  position: relative !important;
+  writing-mode: vertical-rl;
+  /* transform: none !important; */
+  height: 550px !important;
+}
 
 #items.yt-live-chat-item-list-renderer>*.yt-live-chat-item-list-renderer:not(:first-child) {
   border-top: var(--yt-live-chat-item-list-item-border, none);
