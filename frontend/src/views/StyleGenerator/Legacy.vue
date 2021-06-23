@@ -520,8 +520,8 @@ ${this.animationStyle}
     paddingStyle() {
       return `/* Reduce side padding */
 yt-live-chat-text-message-renderer {
-  padding-left: ${this.form.useBarsInsteadOfBg ? 20 : 4}px !important;
-  padding-right: 4px !important;
+  padding-top: ${this.form.useBarsInsteadOfBg ? 20 : 4}px !important;
+  padding-bottom: 4px !important;
 }`
     },
     outlineStyle() {
@@ -763,10 +763,8 @@ yt-live-chat-text-message-renderer${typeSelector}[is-highlighted] {
   content: "";
   position: absolute;
   display: block;
-  left: 8px;
   top: 4px;
-  bottom: 4px;
-  width: 1px;
+  width: ${this.form.avatarSize}px;
   box-sizing: border-box;
   border-radius: 2px;
 }`

@@ -114,7 +114,7 @@ yt-live-chat-text-message-renderer[has-inline-action-buttons]:hover #menu.yt-liv
 yt-live-chat-text-message-renderer {
   position: relative;
   font-size: 13px;
-  padding: 4px 24px;
+  padding: 4px 6px;
   overflow: hidden;
   --yt-endpoint-color: var(--yt-live-chat-primary-text-color, hsl(0, 0%, 6.7%));
   --yt-endpoint-hover-color: var(--yt-live-chat-primary-text-color, var(--yt-endpoint-color));
