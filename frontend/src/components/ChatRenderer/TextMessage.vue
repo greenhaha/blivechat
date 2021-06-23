@@ -33,7 +33,7 @@
           </span>
           <!-- 用户自定的弹幕图片 -->
           <div id="images" v-if="filter_danmu_pic.length != 0" >
-            <img v-for="(item, index) in filter_danmu_pic" :key="index" :name="keyword" :height="item.height" width="auto" :src="`/static/${item.image}`" />
+            <img v-for="(item, index) in filter_danmu_pic" :key="index" :name="keyword" :width="item.height" height="auto" :src="`/static/${item.image}`" />
           </div>
         </div>
       </div>

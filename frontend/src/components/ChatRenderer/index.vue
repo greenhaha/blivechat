@@ -470,7 +470,7 @@ export default {
         this.messages.push(message)
       }
       this.messagesBuffer = []
-      // 等items高度变化
+      //* 等items高度(宽度)变化
       await this.$nextTick()
       this.showNewMessages()
     },
@@ -556,7 +556,7 @@ export default {
       }
     },
     scrollToBottom() {
-      // * 修改为向左滑动，看到页面更右侧的部分
+      // * 滚动条向右滑动，显示最右边的新消息
       this.$refs.scroller.scrollLeft = Math.pow(2, 24)
       this.atBottom = true
     },
