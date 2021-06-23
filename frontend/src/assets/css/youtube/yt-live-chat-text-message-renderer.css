@@ -18,7 +18,6 @@ canvas.yt-live-chat-text-message-renderer, caption.yt-live-chat-text-message-ren
 
 #author-photo.yt-live-chat-text-message-renderer {
   display: block;
-  margin-right: 16px;
   overflow: hidden;
   border-radius: 50%;
   -ms-flex: none;
@@ -147,11 +146,8 @@ yt-live-chat-text-message-renderer[author-is-owner] {
   min-width: 0;
 }
 
-yt-live-chat-author-chip.yt-live-chat-text-message-renderer {
-  margin-right: 8px;
-}
-
 #image-and-message.yt-live-chat-text-message-renderer {
+  margin-top: 4px;
   color: var(--yt-live-chat-primary-text-color, var(--yt-primary-text-color));
   display: inline;
   overflow: hidden;
@@ -164,7 +160,7 @@ yt-live-chat-author-chip.yt-live-chat-text-message-renderer {
 
 #images img {
   border-radius: 14px;
-  margin-right: 6px;
+  margin: 4px 4px;
 }
 
 

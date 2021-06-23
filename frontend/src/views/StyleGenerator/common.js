@@ -78,9 +78,14 @@ yt-live-chat-membership-item-renderer #author-photo img {
   ${config.showAvatars ? '' : 'display: none !important;'}
   width: ${config.avatarSize}px !important;
   height: ${config.avatarSize}px !important;
+}
+
+yt-live-chat-text-message-renderer #author-photo img,
+yt-live-chat-paid-message-renderer #author-photo img,
+yt-live-chat-membership-item-renderer #author-photo img {
   border-radius: ${config.avatarSize}px !important;
-  margin-right: ${config.avatarSize / 4}px !important;
 }`
+
 }
 
 export function getTimeStyle (config) {

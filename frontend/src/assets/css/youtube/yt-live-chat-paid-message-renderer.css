@@ -18,9 +18,7 @@ canvas.yt-live-chat-paid-message-renderer, caption.yt-live-chat-paid-message-ren
 
 #author-photo.yt-live-chat-paid-message-renderer {
   display: block;
-  margin-right: 16px;
   overflow: hidden;
-  border-radius: 50%;
   -ms-flex: none;
   -webkit-flex: none;
   flex: none;
@@ -115,8 +113,8 @@ yt-live-chat-paid-message-renderer[has-inline-action-buttons]:hover #menu.yt-liv
 yt-live-chat-paid-message-renderer {
   position: relative;
   display: block;
-  padding: 4px 24px;
-  font-size: 15px;
+  padding: 4px 4px;
+  font-size: 16px;
   --yt-live-chat-paid-message-background-color: var(--yt-live-chat-paid-message-primary-color);
   --yt-live-chat-paid-message-header-background-color: var(--yt-live-chat-paid-message-secondary-color);
   --yt-live-chat-text-input-field-placeholder-color: var(--yt-live-chat-paid-message-color);
@@ -150,7 +148,7 @@ yt-live-chat-paid-message-renderer[dashboard-money-feed] #card.yt-live-chat-paid
   background-color: var(--yt-live-chat-paid-message-header-background-color, #125aac);
   color: var(--yt-live-chat-paid-message-header-color, #fff);
   font-weight: 500;
-  padding: 8px 16px;
+  padding: 8px 8px;
   min-height: 20px;
   display: flex;
   -ms-flex-direction: row;
@@ -159,8 +157,8 @@ yt-live-chat-paid-message-renderer[dashboard-money-feed] #card.yt-live-chat-paid
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
-  border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 yt-live-chat-paid-message-renderer #content.yt-live-chat-paid-message-renderer::before {
   background: repeating-linear-gradient(
@@ -173,18 +171,12 @@ yt-live-chat-paid-message-renderer #content.yt-live-chat-paid-message-renderer::
 }
 
 yt-live-chat-paid-message-renderer[show-only-header] #header.yt-live-chat-paid-message-renderer {
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-radius: 4px;
 }
 
 yt-live-chat-paid-message-renderer[dashboard-money-feed] #header.yt-live-chat-paid-message-renderer {
   color: var(--yt-live-chat-secondary-text-color);
   padding-bottom: 0;
-}
-
-#author-photo.yt-live-chat-paid-message-renderer {
-  width: 40px;
-  height: 40px;
 }
 
 yt-icon#author-photo.yt-live-chat-paid-message-renderer {
@@ -196,6 +188,7 @@ yt-live-chat-paid-message-renderer[dashboard-money-feed] yt-icon#author-photo.yt
 }
 
 #header-content.yt-live-chat-paid-message-renderer {
+  margin-top: 8px;
   display: flex;
   -ms-flex-direction: row;
   -webkit-flex-direction: row;
@@ -251,7 +244,7 @@ yt-live-chat-paid-message-renderer[dashboard-money-feed] #header-content-primary
 
 #author-name.yt-live-chat-paid-message-renderer {
   color: var(--yt-live-chat-paid-message-author-name-color, rgba(255, 255, 255, 0.7));
-  font-size: 14px;
+  font-size: 18px;
 }
 
 yt-live-chat-paid-message-renderer[dashboard-money-feed] #author-name.yt-live-chat-paid-message-renderer {
@@ -313,11 +306,11 @@ yt-live-chat-paid-message-renderer[allow-animations] #content.yt-live-chat-paid-
 #content.yt-live-chat-paid-message-renderer {
   background-color: var(--yt-live-chat-paid-message-background-color, #1565c0);
   color: var(--yt-live-chat-paid-message-color, #fff);
-  padding: 8px 16px;
+  padding: 8px 8px;
   word-wrap: break-word;
   word-break: break-word;
+  border-top-left-radius: 4px;
   border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
 }
 
 #content.yt-live-chat-paid-message-renderer img.yt-live-chat-paid-message-renderer {
@@ -334,7 +327,7 @@ yt-live-chat-paid-message-renderer[dashboard-money-feed] #content.yt-live-chat-p
 }
 
 yt-live-chat-paid-message-renderer[show-only-header] #content.yt-live-chat-paid-message-renderer {
-  visibility: hidden;
+  display: none;
   padding: 0;
 }
 

@@ -7,10 +7,8 @@
 
 #author-photo.yt-live-chat-membership-item-renderer {
   display: block;
-  margin-right: 16px;
 
   overflow: hidden;
-  border-radius: 50%;
 
   -ms-flex: var(--layout-flex-none_-_-ms-flex);
   -webkit-flex: var(--layout-flex-none_-_-webkit-flex);
@@ -122,7 +120,7 @@ yt-live-chat-membership-item-renderer {
   --yt-live-chat-sponsor-text-color: #fff;
   --yt-live-chat-item-timestamp-display: var(--yt-live-chat-paid-message-timestamp-display, none);
 
-  padding: 4px 24px;
+  padding: 4px 8px;
 }
 
 
