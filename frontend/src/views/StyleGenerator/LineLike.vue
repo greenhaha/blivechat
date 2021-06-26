@@ -1,6 +1,22 @@
 <template>
   <div>
     <el-form label-width="150px" size="mini">
+      <h3>{{$t('stylegen.global')}}</h3>
+      <el-card shadow="never">
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('stylegen.danmakuAtBottom')">
+              <el-switch v-model="form.danmakuAtBottom"></el-switch>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="12">
+            <el-form-item :label="$t('stylegen.tickerAtButtom')">
+              <el-switch v-model="form.tickerAtButtom"></el-switch>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-card>
+
       <h3>{{$t('stylegen.avatars')}}</h3>
       <el-card shadow="never">
         <el-row :gutter="20">
@@ -338,6 +354,9 @@ import * as common from './common'
 import {mergeConfig} from '@/utils'
 
 export const DEFAULT_CONFIG = {
+  danmakuAtBottom: false,
+  tickerAtButtom: false,
+  
   showAvatars: true,
   avatarSize: 40,
 
@@ -414,6 +433,8 @@ export default {
 
 ${common.COMMON_STYLE}
 
+${this.globalStyle}
+
 ${this.paddingStyle}
 
 ${this.avatarStyle}
@@ -439,6 +460,17 @@ ${this.animationStyle}
         allFonts.push(this.form[name])
       }
       return common.getImportStyle(allFonts)
+    },
+    globalStyle() {
+      return `/* Global Setting */
+yt-live-chat-renderer {
+  ${this.form.tickerAtButtom ? `flex-direction: column-reverse;` : ''}
+}
+#item-scroller {
+  ${this.form.danmakuAtBottom ? `display: flex;
+  flex-direction: column;
+  justify-content: flex-end;` : ''}
+}`
     },
     paddingStyle() {
       return `/* Reduce side padding */
