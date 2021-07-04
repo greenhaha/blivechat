@@ -63,3 +63,13 @@ yt-icon.yt-live-chat-ticker-renderer {
   padding: 4px;
   width: 24px;
 }
+
+yt-live-chat-renderer #items.yt-live-chat-ticker-renderer {
+  float: right;
+  direction: rtl;
+}
+
+yt-live-chat-renderer[danmaku-at-bottom] #items.yt-live-chat-ticker-renderer {
+  float: left;
+  direction: ltr;
+}

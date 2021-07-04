@@ -63,21 +63,21 @@ yt-live-chat-renderer[danmaku-at-bottom] #item-offset.yt-live-chat-item-list-ren
   float: left;
 }
 
-yt-live-chat-renderer #items,
-yt-live-chat-renderer #chat-items {
+yt-live-chat-renderer #items.yt-live-chat-item-list-renderer,
+yt-live-chat-renderer #chat-items.yt-live-chat-item-list-renderer {
   float: right;
 }
-yt-live-chat-renderer[danmaku-at-bottom] #items,
-yt-live-chat-renderer[danmaku-at-bottom] #chat-items {
+yt-live-chat-renderer[danmaku-at-bottom] #items.yt-live-chat-item-list-renderer,
+yt-live-chat-renderer[danmaku-at-bottom] #chat-items.yt-live-chat-item-list-renderer {
   float: left;
 }
-yt-live-chat-renderer #chat-items {
+yt-live-chat-renderer #chat-items.yt-live-chat-item-list-renderer {
   display: flex;
   float: right;
   flex-direction: column-reverse;
 }
 
-yt-live-chat-renderer[danmaku-at-bottom] #chat-items {
+yt-live-chat-renderer[danmaku-at-bottom] #chat-items.yt-live-chat-item-list-renderer {
   flex-direction: column;
 }
 
