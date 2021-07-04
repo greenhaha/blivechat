@@ -56,10 +56,33 @@ yt-live-chat-renderer[ticker-at-buttom] {
   -webkit-flex-direction: column-reverse;
 }
 
-yt-live-chat-renderer[danmaku-at-bottom] #item-scroller {
+yt-live-chat-renderer #item-offset.yt-live-chat-item-list-renderer {
+  float: right;
+}
+yt-live-chat-renderer[danmaku-at-bottom] #item-offset.yt-live-chat-item-list-renderer {
+  float: left;
+}
+
+yt-live-chat-renderer #items,
+yt-live-chat-renderer #chat-items {
+  float: right;
+}
+yt-live-chat-renderer[danmaku-at-bottom] #items,
+yt-live-chat-renderer[danmaku-at-bottom] #chat-items {
+  float: left;
+}
+yt-live-chat-renderer #chat-items {
   display: flex;
+  float: right;
+  flex-direction: column-reverse;
+}
+
+yt-live-chat-renderer[danmaku-at-bottom] #chat-items {
   flex-direction: column;
-  justify-content: flex-end;
+}
+
+yt-live-chat-renderer #chat-items.yt-live-chat-item-list-renderer {
+  height: 100%;
 }
 
 yt-live-chat-renderer[hide-timestamps] {

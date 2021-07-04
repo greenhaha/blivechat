@@ -9,9 +9,9 @@
       <div ref="scroller" id="item-scroller" class="style-scope yt-live-chat-item-list-renderer animated"  @scroll="onScroll">
         <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="width: 0px;">
           <div ref="items" id="items" class="style-scope yt-live-chat-item-list-renderer" style="overflow: scroll"
-          :style="{transform: `translateX(${Math.floor(scrollPixelsRemaining)}px)`}"
+          :style="{transform: `translateX(${danmakuAtBottom ? '-' : ''}${Math.floor(scrollPixelsRemaining)}px)`}"
           >
-            <transition-group tag="div" :css="false" @leave="onMessageLeave"
+            <transition-group tag="div" :css="false" @leave="onMessageLeave" 
               id="chat-items" class="style-scope yt-live-chat-item-list-renderer"
             >
               <template v-for="message in messages">
@@ -158,7 +158,6 @@ export default {
       smoothScrollRafHandle: null,         // 平滑滚动requestAnimationFrame句柄
       lastSmoothScrollUpdate: null,        // 平滑滚动上一帧时间
 
-      onLeave: false,                      // 判断消息是否正在出列，保证出列动画执行时无入列
       atBottom: true,                      // 滚动到底部，用来判断能否自动滚动
       cantScrollStartTime: null,           // 开始不能自动滚动的时间，用来防止卡住
       updateTimerId: window.setInterval(this.updateProgress, 1000)
@@ -206,29 +205,23 @@ export default {
       let time_interval = this.estimatedEnqueueInterval;
       let curTime = new Date()
       
-      // console.log(curTime - this.lastEnqueueTime)
-      // console.log(time_interval)
       el.classList.add('leaving')
       if(time_interval < 1650 && curTime - this.lastEnqueueTime < 2000) {
         // console.log('消息过快，省略动画')
         done()
         await this.$nextTick()
-        this.$refs.itemOffset.style.height = `${this.$refs.items.clientHeight}px`
         return
       }
-      this.onLeave = true
 
       // 等 100ms 后执行
       window.setTimeout(() =>  {
         el.classList.add('collapsing')
         done()
         this.$refs.itemOffset.classList.add('collapsing')
-        this.$refs.itemOffset.style.height = `${this.$refs.items.clientHeight}px`
         window.setTimeout(() => {
           this.$refs.itemOffset.classList.remove('collapsing')
           el.classList.remove('leaving')
           el.classList.remove('collapsing')
-          this.onLeave = false
 
         }, 200)
       }, 100)
@@ -534,11 +527,7 @@ export default {
       if (this.messagesBuffer.length <= 0) {
         return
       }
-      if(this.onLeave) {
-        // console.log('删除动画进行中')
-        return
-      }
-
+      
       if (!this.canScrollToBottomOrTimedOut()) {
         if (this.messagesBuffer.length > this.maxNumber) {
           // 未显示消息数 > 最大可显示数，丢弃
@@ -567,6 +556,7 @@ export default {
       }
 
       this.preinsertWidth = this.$refs.items.clientWidth
+
 
       for (let message of this.messagesBuffer) {
         this.messages.push(message)
@@ -664,7 +654,11 @@ export default {
     },
     scrollToBottom() {
       // * 滚动条向右滑动，显示最右边的新消息
-      this.$refs.scroller.scrollLeft = Math.pow(2, 24)
+      if(this.danmakuAtBottom) {
+        this.$refs.scroller.scrollRight = Math.pow(2, 24)
+      } else {
+        this.$refs.scroller.scrollLeft = Math.pow(2, 24)
+      }
       this.atBottom = true
     },
     onScroll() {

@@ -20,9 +20,9 @@ export default {
     mergeSimilarDanmaku: '合并相似弹幕',
     mergeGift: '合并礼物',
 
-    danmakuAtBottom: '弹幕从底部出现',
+    danmakuAtBottom: '弹幕从左侧添加',
     tickerAtButtom: '底部显示SC固定栏',
-
+    
     showTranslateDanmakuOnly: '只显示翻译弹幕',
     translationSign: '翻译弹幕首字符',
     onlyOneCharacter: '只能输入一个字符，如【',

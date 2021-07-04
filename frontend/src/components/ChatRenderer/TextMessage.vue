@@ -30,7 +30,7 @@
         <!-- 直接替换表情包 -->
         <div v-if="imageShowType == 0" id='image-and-message' class="style-scope yt-live-chat-text-message-renderer">
           <template v-for="(item, index) in replaceDanmuPicDirect"  >
-            <img :key="index" v-if="!showTranslateDanmakuOnly && item.type == 'image'" class="style-scope yt-live-chat-text-message-renderer" :height="item.height" width="auto" :src="`/static/${item.content}`" />
+            <img :key="index" v-if="!showTranslateDanmakuOnly && item.type == 'image'" class="style-scope yt-live-chat-text-message-renderer" :width="item.height" height="auto" :src="`/static/${item.content}`" />
             <span :key="index" v-else id="message" class="style-scope yt-live-chat-text-message-renderer" >{{item.content}}</span>
           </template>
           <el-badge :value="repeated" :max="99" v-show="repeated > 1" class="style-scope yt-live-chat-text-message-renderer"
@@ -40,7 +40,7 @@
         <!-- 替换表情包 -->
         <div v-else-if="imageShowType == 1" id='image-and-message' class="style-scope yt-live-chat-text-message-renderer">
           <template v-for="(item, index) in replaceDanmuPic"  >
-            <img :key="index" v-if="!showTranslateDanmakuOnly && item.type == 'image'" class="style-scope yt-live-chat-text-message-renderer" :height="item.height" width="auto" :src="`/static/${item.content}`" />
+            <img :key="index" v-if="!showTranslateDanmakuOnly && item.type == 'image'" class="style-scope yt-live-chat-text-message-renderer" :width="item.height" height="auto" :src="`/static/${item.content}`" />
             <span :key="index" v-else id="message" class="style-scope yt-live-chat-text-message-renderer" >{{item.content}}</span>
           </template>
           <el-badge :value="repeated" :max="99" v-show="repeated > 1" class="style-scope yt-live-chat-text-message-renderer"
