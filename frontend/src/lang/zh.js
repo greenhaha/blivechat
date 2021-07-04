@@ -21,6 +21,7 @@ export default {
     mergeGift: '合并礼物',
 
     danmakuAtBottom: '弹幕从左侧添加',
+    // danmakuAtBottom: '弹幕居下',
     tickerAtButtom: '底部显示SC固定栏',
     
     showTranslateDanmakuOnly: '只显示翻译弹幕',

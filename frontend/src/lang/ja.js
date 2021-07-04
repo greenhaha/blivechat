@@ -21,6 +21,7 @@ export default {
     mergeGift: 'ギフトを合併する',
 
     danmakuAtBottom: 'コメントを左から現れる',
+    // danmakuAtBottom: 'コメントを下揃え',
     tickerAtButtom: '最低表示常駐Topスーパーチャットを下から現れる',
     
     showTranslateDanmakuOnly: '翻訳コメントだけを表示する',

@@ -21,6 +21,7 @@ export default {
     mergeGift: 'Merge gifts',
     
     danmakuAtBottom: 'New messages add from left',
+    // danmakuAtBottom: 'Align messages to bottom',
     tickerAtButtom: 'Show on-top Super Chats at bottom',
 
     showTranslateDanmakuOnly: 'Show translation message only',
