@@ -204,6 +204,14 @@ export default {
     async onMessageLeave(el, done) {
       let time_interval = this.estimatedEnqueueInterval;
       let curTime = new Date()
+
+      if(this.fadeOutNum != 0) {
+        el.setAttribute('is-deleted', true)
+        window.setTimeout(() =>  {
+          done()
+        }, 600)
+        return 
+      } 
       
       el.classList.add('leaving')
       if(time_interval < 1650 && curTime - this.lastEnqueueTime < 2000) {
