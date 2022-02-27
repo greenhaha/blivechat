@@ -1,10 +1,10 @@
 export default {
   sidebar: {
     home: 'Home',
-    stylegen: 'Style generator',
+    stylegen: 'Style Generator',
     help: 'Help',
-    projectAddress: 'Project address',
-    giftRecordOfficial: 'Official Super Chat record',
+    projectAddress: 'Project Address',
+    giftRecordOfficial: 'Official Super Chat Record',
   },
   home: {
     roomIdEmpty: "Room ID can't be empty",
@@ -73,9 +73,16 @@ export default {
     minDanmakuInterval: 'min interval of message sending',
     maxDanmakuInterval: 'max interval of message sending',
 
+    emoticon: 'Custom Emotes',
+    emoticonKeyword: 'Emote Code',
+    emoticonUrl: 'URL',
+    operation: 'Operation',
+    addEmoticon: 'Add emote',
+
     roomUrl: 'Room URL',
     copy: 'Copy',
     enterBilibili: 'Enter bilibili room',
+
     enterRoom: 'Enter room',
     enterTestRoom: 'Enter test room',
     exportConfig: 'Export config',
@@ -103,7 +110,7 @@ export default {
     showAvatars: 'Show avatars',
     avatarSize: 'Avatar size',
 
-    userNames: 'User names',
+    userNames: 'User Names',
     showUserNames: 'Show user names',
     font: 'Font',
     fontSize: 'Font size',
@@ -140,7 +147,7 @@ export default {
     moderatorMessageBgColor: 'Moderator background color',
     memberMessageBgColor: 'Member background color',
 
-    scAndNewMember: 'Super Chat / New member',
+    scAndNewMember: 'Super Chat / New Member',
     firstLineFont: 'First line font',
     firstLineFontSize: 'First line font size',
     firstLineLineHeight: 'First line line height (0 for default)',
