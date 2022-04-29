@@ -49,14 +49,15 @@ export default {
     imageAlignTypes: [
       {
         id: 'inline',
-        name: 'inline'
+        name: 'inline(emoji)'
       },
       {
         id: 'block',
-        name: 'block'
+        name: 'block(pic)'
       }
     ],
     maxImage: 'Max number of　pictures',
+    maxEmoji: 'Max number of　emojis',
 
     block: 'Block',
     giftDanmaku: 'Block system messages (gift effect)',

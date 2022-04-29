@@ -23,7 +23,8 @@ export const DEFAULT_CONFIG = {
   pinTime: 0,
 
   imageShowType: 0,
-  maxImage: 2,
+  maxEmoji: 5,
+  maxImage: 1,
 
   blockGiftDanmaku: true,
   blockLevel: 0,
