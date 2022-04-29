@@ -42,10 +42,6 @@ export default {
       },
       {
           id: '1',
-          name: 'Replace the text with sign'
-      },
-      {
-          id: '2',
           name: 'Add after message'
       }
     ],
