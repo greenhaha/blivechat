@@ -149,8 +149,7 @@ yt-live-chat-text-message-renderer[author-is-owner] {
   display: inline;
 }
 #content.yt-live-chat-text-message-renderer {
-  display: flex;
-  flex-direction: row;
+  display: inline;
   align-items: flex-start;
   -ms-align-self: center;
   -webkit-align-self: center;
@@ -158,6 +157,10 @@ yt-live-chat-text-message-renderer[author-is-owner] {
   min-width: 0;
 }
 
+yt-live-chat-author-chip.yt-live-chat-text-message-renderer {
+  white-space: nowrap;
+  margin-right: 8px;
+}
 
 #image-and-message #message.yt-live-chat-text-message-renderer {
   margin-top: 4px;
