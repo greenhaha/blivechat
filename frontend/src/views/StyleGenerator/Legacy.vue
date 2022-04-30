@@ -697,6 +697,8 @@ yt-live-chat-text-message-renderer #image-and-message .emoji {
 }
 
 #image-and-message img[display="inline"] {
+  position: relative;
+  top: 3px;
   border-radius: ${this.form.emoticonInlineBorderRadius}px;
 }`
     },
