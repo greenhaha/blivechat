@@ -150,8 +150,23 @@
           <el-col :xs="24" :sm="12">
             <el-form-item :label="$t('stylegen.lineHeight')">
               <el-input v-model.number="form.messageLineHeight" type="number" min="0"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :xs="24" :sm="8">
             <el-form-item :label="$t('stylegen.emoticonSize')">
               <el-input v-model.number="form.emoticonSize" type="number" min="0"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="8">
+            <el-form-item :label="$t('stylegen.emoticonInlineBorderRadius')">
+              <el-input v-model.number="form.emoticonInlineBorderRadius" type="number" min="0"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="24" :sm="8">
+            <el-form-item :label="$t('stylegen.emoticonBlockBorderRadius')">
+              <el-input v-model.number="form.emoticonBlockBorderRadius" type="number" min="0"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -377,6 +392,8 @@ export const DEFAULT_CONFIG = {
   showOnlyOwnerMedal: true,
   showMedalName: true,
   showMedalLevel: true,
+  medalFontSize: 14,
+  medalLineHeight: 0,
 
   messageFont: 'Noto Sans SC',
   messageFontSize: 18,
@@ -384,7 +401,9 @@ export const DEFAULT_CONFIG = {
   messageColor: '#000000',
   
   // TODO: 表情包默认大小
-  emoticonSize: 60,
+  emoticonSize: 48,
+  emoticonInlineBorderRadius: 0,
+  emoticonBlockBorderRadius: 4,
 
   showTime: false,
   timeFont: 'Noto Sans SC',
@@ -570,11 +589,6 @@ yt-live-chat-text-message-renderer #message * {
 }
 
 yt-live-chat-text-message-renderer #image-and-message {
-  overflow: visible !important;
-  padding: 20px;
-  border-radius: 30px;
-}
-yt-live-chat-text-message-renderer #message {
   display: block !important;
   overflow: visible !important;
   padding: 20px;
@@ -586,9 +600,16 @@ yt-live-chat-text-message-renderer #message .emoji {
   height: ${this.form.emoticonSize}px !important;
 }
 
+#image-and-message img[display="block"] {
+  border-radius: ${this.form.emoticonBlockBorderRadius}px;
+}
+
+#image-and-message img[display="inline"] {
+  border-radius: ${this.form.emoticonInlineBorderRadius}px;
+}
+
 /* The triangle beside dialog */
-yt-live-chat-text-message-renderer #image-and-message::before,
-yt-live-chat-text-message-renderer #message::before {
+yt-live-chat-text-message-renderer #image-and-message::before {
   content: "";
   display: inline-block;
   position: absolute;
@@ -713,12 +734,11 @@ yt-live-chat-ticker-sponsor-item-renderer * {
         color = '#ffffff'
       }
       let typeSelector = authorType ? `[author-type="${authorType}"]` : ''
-      return `yt-live-chat-text-message-renderer${typeSelector} #image-and-message,
-  yt-live-chat-text-message-renderer${typeSelector} #message {
+      return `yt-live-chat-text-message-renderer${typeSelector} #image-and-message {
   background-color: ${color} !important;
 }
 
-yt-live-chat-text-message-renderer${typeSelector} #message::before {
+yt-live-chat-text-message-renderer${typeSelector} #image-and-message::before {
   border-right-color: ${color};
 }`
     }

@@ -14,7 +14,6 @@ export const DEFAULT_CONFIG = {
   showGiftInfo: true,
   mergeSimilarDanmaku: false,
   mergeGift: false,
-
   danmakuAtBottom: false,
   tickerAtButtom: false,
   
@@ -22,6 +21,7 @@ export const DEFAULT_CONFIG = {
   fadeOutNum: 3,
   pinTime: 0,
 
+  autoRenderOfficialEmoji: true,
   imageShowType: 0,
   maxEmoji: 5,
   maxImage: 1,
@@ -64,7 +64,7 @@ export function getLocalConfig() {
   }
 }
 
-// TODO: 前端上传表情包设置
+// FIXME: 前端上传表情包设置
 export function sanitizeConfig(config) {
   let newEmoticons = []
   if (config.emoticons instanceof Array) {
