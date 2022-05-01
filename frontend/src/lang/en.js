@@ -25,6 +25,7 @@ export default {
     tickerAtButtom: 'Show on-top Super Chats at bottom',
 
     showTranslateDanmakuOnly: 'Show translation message only',
+    blockTranslateDanmaku: 'Block translation message',
     translationSign: 'translation sign',
     onlyOneCharacter: 'one character only, like:【',
 
@@ -35,7 +36,7 @@ export default {
     pinTime: 'message remain time(0 remain forever)',
     
     
-    autoRenderOfficialEmoji: 'auto show official emoji',
+    autoRenderOfficialEmoji: 'auto add official emoji',
     isGreedyMatch: 'is greedy match',
     imageShowType: 'Way image show',
     imageShowTypes: [
