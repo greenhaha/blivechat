@@ -400,7 +400,6 @@ export const DEFAULT_CONFIG = {
   messageLineHeight: 0,
   messageColor: '#000000',
   
-  // TODO: 表情包默认大小
   emoticonSize: 48,
   emoticonInlineBorderRadius: 0,
   emoticonBlockBorderRadius: 4,
@@ -570,12 +569,12 @@ yt-live-chat-author-medal-renderer[is-fan-group] {
   ${this.form.showMedalLevel ? '' : `visibility: hidden;
   width: 0;
   height: 0;
-  padding: 0;
-  border: none;`}
+  padding: 0;`}
+  font-size: ${this.form.medalFontSize}px !important;
+  line-height: ${this.form.medalLineHeight || this.form.medalFontSize}px !important;
 }
 `
     },
-    // FIXME: #message 是否需要？
     messageStyle() {
       return `/* Messages */
 yt-live-chat-text-message-renderer #image-and-message,

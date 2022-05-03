@@ -38,6 +38,7 @@ export default {
     
     autoRenderOfficialEmoji: 'auto add official emoji',
     isGreedyMatch: 'is greedy match',
+    isSkipSameImage: 'not show same image multiple times',
     imageShowType: 'Way image show',
     imageShowTypes: [
       {

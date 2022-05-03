@@ -25,6 +25,7 @@ export const DEFAULT_CONFIG = {
 
   autoRenderOfficialEmoji: true,
   isGreedyMatch: true,
+  isSkipSameImage: false,
   imageShowType: 0,
   maxEmoji: 5,
   maxImage: 1,
