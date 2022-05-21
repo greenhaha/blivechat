@@ -178,6 +178,7 @@ export default {
 
     time: 'Timestamps',
     showTime: 'Show timestamps',
+    showTimeRight: 'Show timestamps at right',
 
     backgrounds: 'Backgrounds',
     bgColor: 'Background color',
