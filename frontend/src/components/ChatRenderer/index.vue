@@ -604,8 +604,7 @@ export default {
       }
 
       this.preinsertWidth = this.$refs.items.clientWidth
-
-
+      this.calculateHeight()
       for (let message of this.messagesBuffer) {
         this.messages.push(message)
       }
@@ -614,6 +613,9 @@ export default {
       await this.$nextTick()
       
       this.showNewMessages()
+    },
+    calculateHeight() {
+      this.preinsertHeight = this.$refs.items.clientHeight
     },
     showNewMessages() {
       let hasScrollBar = this.$refs.items.clientWidth > this.$refs.scroller.clientWidth
