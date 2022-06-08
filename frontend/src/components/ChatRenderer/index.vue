@@ -7,9 +7,11 @@
     <ticker class="style-scope yt-live-chat-renderer" :messages="paidMessages" :showGiftInfo="showGiftInfo"></ticker>
     <yt-live-chat-item-list-renderer class="style-scope yt-live-chat-renderer" allow-scroll>
       <div ref="scroller" id="item-scroller" class="style-scope yt-live-chat-item-list-renderer animated"  @scroll="onScroll">
-        <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="width: 0px;">
+        <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="width: 0px;"
+          :style="`${this.randomXOffset ? 'overflow: visible;' : 'overflow: hidden; position: relative;'}`"
+        >
           <div ref="items" id="items" class="style-scope yt-live-chat-item-list-renderer" style="overflow: scroll"
-          :style="{transform: `translateX(${danmakuAtBottom ? '-' : ''}${Math.floor(scrollPixelsRemaining)}px)`}"
+          :style="{transform: `translateX(${danmakuAtBottom ? '-' : ''}${Math.floor(scrollPixelsRemaining)}px); ${this.randomXOffset ? 'overflow: visible !important;' : 'overflow: hidden !important;'}` }"
           >
             <transition-group tag="div" :css="false" @leave="onMessageLeave" 
               id="chat-items" class="style-scope yt-live-chat-item-list-renderer"
@@ -17,6 +19,12 @@
               <template v-for="message in messages">
                 <text-message :key="message.id" v-if="message.type === MESSAGE_TYPE_TEXT"
                   class="style-scope yt-live-chat-item-list-renderer"
+                  :style="
+                    `--x-offset:${message.xOffset}px;
+                    --float-up-height: ${getFloatUpHeight}px;
+                    --float-up-time: ${getFloatUpTime}s;`
+                  "
+                  :randomXOffset="randomXOffset"
                   :time="message.time"
                   :avatarUrl="message.avatarUrl"
                   :authorName="message.authorName"
@@ -34,6 +42,13 @@
                 ></text-message>
                 <paid-message :key="message.id" v-else-if="message.type === MESSAGE_TYPE_GIFT"
                   class="style-scope yt-live-chat-item-list-renderer"
+                  :style="`--x-offset:${message.xOffset}px;`"
+                   :style="
+                    `--x-offset:${message.xOffset}px;
+                    --float-up-height: ${getFloatUpHeight}px;
+                    --float-up-time: ${getFloatUpTime}s;`
+                  "
+                  :randomXOffset="randomXOffset"
                   :time="message.time"
                   :avatarUrl="message.avatarUrl"
                   :authorName="getShowAuthorName(message)"
@@ -44,6 +59,13 @@
                 ></paid-message>
                 <membership-item :key="message.id" v-else-if="message.type === MESSAGE_TYPE_MEMBER"
                   class="style-scope yt-live-chat-item-list-renderer"
+                  :style="`--x-offset:${message.xOffset}px;`"
+                   :style="
+                    `--x-offset:${message.xOffset}px;
+                    --float-up-height: ${getFloatUpHeight}px;
+                    --float-up-time: ${getFloatUpTime}s;`
+                  "
+                  :randomXOffset="randomXOffset"
                   :time="message.time"
                   :avatarUrl="message.avatarUrl"
                   :authorName="getShowAuthorName(message)"
@@ -54,6 +76,13 @@
                 <paid-message :key="message.id" v-else-if="message.type === MESSAGE_TYPE_SUPER_CHAT"
                   class="style-scope yt-live-chat-item-list-renderer"
                   giftName="superchat"
+                  :style="`--x-offset:${message.xOffset}px;`"
+                   :style="
+                    `--x-offset:${message.xOffset}px;
+                    --float-up-height: ${getFloatUpHeight}px;
+                    --float-up-time: ${getFloatUpTime}s;`
+                  "
+                  :randomXOffset="randomXOffset"
                   :time="message.time"
                   :avatarUrl="message.avatarUrl"
                   :authorName="getShowAuthorName(message)"
@@ -117,6 +146,18 @@ export default {
       type: Boolean,
       default: chatConfig.DEFAULT_CONFIG.tickerAtButtom
     },
+    randomXOffset: {
+      type: Boolean,
+      default: chatConfig.DEFAULT_CONFIG.randomXOffset
+    },
+    floatUpHeight: {
+      type: Number,
+      default: chatConfig.DEFAULT_CONFIG.floatUpHeight
+    },
+    floatUpTime: {
+      type: Number,
+      default: chatConfig.DEFAULT_CONFIG.floatUpTime
+    },
     mergeSameUserDanmakuInterval: {
       type: Number,
       default: chatConfig.DEFAULT_CONFIG.mergeSameUserDanmakuInterval
@@ -148,6 +189,7 @@ export default {
       MESSAGE_TYPE_GIFT: constants.MESSAGE_TYPE_GIFT,
       MESSAGE_TYPE_MEMBER: constants.MESSAGE_TYPE_MEMBER,
       MESSAGE_TYPE_SUPER_CHAT: constants.MESSAGE_TYPE_SUPER_CHAT,
+      
 
       messages: [],                        // 显示的消息
       paidMessages: [],                    // 固定在上方的消息
@@ -174,6 +216,12 @@ export default {
     }
   },
   computed: {
+    getFloatUpHeight() {
+      return this.floatUpHeight;
+    },
+    getFloatUpTime() {
+      return this.floatUpTime;
+    },
     canScrollToBottom() {
       return this.atBottom/* || this.allowScroll */
     }
@@ -228,6 +276,8 @@ export default {
         // console.log('消息过快，省略动画')
         done()
         await this.$nextTick()
+        // TODO: 弹幕左右滚动效果
+        this.$refs.itemOffset.style.width = `${this.$refs.items.clientWidth}px`
         return
       }
 
@@ -250,6 +300,7 @@ export default {
     getShowContent: constants.getShowContent,
     getShowRichContent: constants.getShowRichContent,
     getShowAuthorName: constants.getShowAuthorName,
+    
 
     addMessage(message) {
       this.addMessages([message])
@@ -628,7 +679,14 @@ export default {
       this.preinsertHeight = this.$refs.items.clientHeight
     },
     showNewMessages() {
+      
+      if(this.randomXOffset) {
+        console.log("if randomXOffset")
+        return
+      }
+
       let hasScrollBar = this.$refs.items.clientWidth > this.$refs.scroller.clientWidth
+      // FIXME: 随机生成消息模式，不滚动
       this.$refs.itemOffset.style.width = `${this.$refs.items.clientWidth}px`
       if (!this.canScrollToBottomOrTimedOut() || !hasScrollBar) {
         return

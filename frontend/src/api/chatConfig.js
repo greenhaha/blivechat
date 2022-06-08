@@ -21,6 +21,12 @@ export const DEFAULT_CONFIG = {
   danmakuAtBottom: false,
   tickerAtButtom: false,
 
+  randomXOffset: false,
+  randomRangeMin: 0,
+  randomRangeMax: 1200,
+  floatUpHeight: 1200,
+  floatUpTime: 15,
+
   maxNumber: 30,
   fadeOutNum: 3,
   pinTime: 0,
