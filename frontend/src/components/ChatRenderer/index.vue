@@ -28,6 +28,7 @@
                     --float-distance-y: ${message.floatDistanceY}px;
                     --float-time: ${getFloatTime}s;`
                   "
+                  :textColor="message.textColor"
                   :randomXOffset="randomXOffset"
                   :randomYOffset="randomYOffset"
                   :time="message.time"
@@ -355,7 +356,6 @@ export default {
       })
       return res
     },
-    // TODO: 合并同一个user 的消息
     mergeSameUserText(newContent, newRichContent, authorName, time) {
       let res = false
       // 遍历最新消息，看是不是同一个用户发送的
@@ -398,7 +398,6 @@ export default {
       })
       return res
     },
-    // TODO: 合并相似消息
     forEachRecentMessage(num, callback) {
       // 从新到老遍历num条消息
       for (let i = this.smoothedMessageQueue.length - 1; i >= 0 && num > 0; i--) {
@@ -688,7 +687,6 @@ export default {
     },
     showNewMessages() {
       if(this.randomXOffset || this.randomYOffset) {
-        console.log("if randomXOffset")
         return
       }
 
