@@ -698,7 +698,7 @@ yt-live-chat-author-medal-renderer[is-fan-group] {
   ${this.form.showMedal ? `display: flex;` : ''}
 }
 #medal-name.yt-live-chat-author-medal-renderer {
-  ${this.form.showMedalName ? '' :  `visibility: hidden;
+  ${this.form.showMedalName ? '' : `visibility: hidden;
   width: 0;
   height: 0;
   padding: 0;`}
@@ -724,7 +724,7 @@ yt-live-chat-text-message-renderer #message * {
   ${this.form.messageColor ? `color: ${this.form.messageColor} !important;` : ''}
   font-family: "${common.cssEscapeStr(this.form.messageFont)}"${common.FALLBACK_FONTS};
   font-size: ${this.form.messageFontSize}px !important;
-  line-height: ${this.form.messageLineHeight || this.form.messageFontSize}px !important;
+  line-height: ${this.form.messageLineHeight || this.form.messageFontSize + 10}px !important;
 }
 
 ${this.form.messageOnNewLine ? `yt-live-chat-text-message-renderer #image-and-message {

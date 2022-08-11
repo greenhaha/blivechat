@@ -18,7 +18,7 @@ canvas.yt-live-chat-text-message-renderer, caption.yt-live-chat-text-message-ren
 
 #author-photo.yt-live-chat-text-message-renderer {
   display: block;
-  margin-right: 16px;
+  margin-right: 0px;
   /* FIXME: overflow 是否要注释 */
   /* overflow: hidden; */
   border-radius: 50%;
@@ -153,15 +153,11 @@ yt-live-chat-text-message-renderer[author-is-owner] {
   min-width: 0;
 }
 
-yt-live-chat-author-chip.yt-live-chat-text-message-renderer {
-  margin-right: 8px;
-}
-
 #image-and-message #message.yt-live-chat-text-message-renderer {
   margin-top: 4px;
   color: var(--yt-live-chat-primary-text-color, var(--yt-primary-text-color));
   /* FIXME: display 是否要注释 */
-  /* display: inline; */
+  display: inline;
   width: fit-content;
   overflow: hidden;
   overflow-wrap: break-word;
@@ -172,7 +168,7 @@ yt-live-chat-author-chip.yt-live-chat-text-message-renderer {
 }
 
 #image-and-message img[display="block"] {
-  margin-top: 3px;
+  margin-right: 3px;
 }
 #image-and-message img[display="inline"] {
   position: relative;

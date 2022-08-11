@@ -75,6 +75,7 @@ yt-live-chat-renderer #chat-items.yt-live-chat-item-list-renderer {
   display: flex;
   float: right;
   flex-direction: column-reverse;
+  align-items: flex-start;
 }
 
 yt-live-chat-renderer[danmaku-at-bottom] #chat-items.yt-live-chat-item-list-renderer {

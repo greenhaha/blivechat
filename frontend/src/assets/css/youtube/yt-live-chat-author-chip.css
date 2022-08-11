@@ -14,6 +14,7 @@ yt-live-chat-author-chip {
   -ms-flex-align: center;
   -webkit-align-items: center;
   align-items: center;
+  vertical-align: top;
 }
 
 #author-name.yt-live-chat-author-chip {

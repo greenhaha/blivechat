@@ -114,7 +114,7 @@ export function getAnimationStyle(config) {
   let curTime = 0
   if (config.animateIn) {
     keyframes.push(`  0% { opacity: 0;${!config.slide ? ''
-      : ` transform: translateX(${config.reverseSlide ? 16 : -16}px);`
+      : ` transform: translateY(${config.reverseSlide ? 16 : -16}px);`
     } }`)
     curTime += config.fadeInTime
     keyframes.push(`  ${curTime / totalTime * 100}% { opacity: 1; transform: none; }`)
@@ -124,7 +124,7 @@ export function getAnimationStyle(config) {
     keyframes.push(`  ${curTime / totalTime * 100}% { opacity: 1; transform: none; }`)
     curTime += config.fadeOutTime
     keyframes.push(`  ${curTime / totalTime * 100}% { opacity: 0;${!config.slide ? ''
-      : ` transform: translateX(${config.reverseSlide ? -16 : 16}px);`
+      : ` transform: translateY(${config.reverseSlide ? -16 : 16}px);`
     } }`)
   }
   return `/* Animation */
