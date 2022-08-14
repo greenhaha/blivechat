@@ -8,7 +8,8 @@
     <yt-live-chat-item-list-renderer class="style-scope yt-live-chat-renderer" allow-scroll>
       <div ref="scroller" id="item-scroller" class="style-scope yt-live-chat-item-list-renderer animated"  @scroll="onScroll">
         <div ref="itemOffset" id="item-offset" class="style-scope yt-live-chat-item-list-renderer" style="width: 0px; height: 100%"
-          :style="`${(this.randomXOffset || this.randomYOffset) ? 'overflow: visible;' : 'overflow: hidden; position: relative;'}`"
+          
+          :style="`${(this.randomXOffset || this.randomYOffset) ? 'overflow: visible; float: initial;' : 'overflow: hidden; position: relative;'}`"
         >
           <div ref="items" id="items" class="style-scope yt-live-chat-item-list-renderer" style="overflow: scroll"
             :style="{ transform: `translateX(${danmakuAtBottom ? '-' : ''}${Math.floor(scrollPixelsRemaining)}px)`, 

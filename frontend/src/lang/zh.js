@@ -163,7 +163,7 @@ export default {
     dark: '黑暗',
 
     global: '全局',
-    danmakuAtBottom: '弹幕从底部出现',
+    danmakuAtBottom: '弹幕从左侧添加',
     tickerAtButtom: '底部显示SC固定栏',
     
     outlines: '描边',
