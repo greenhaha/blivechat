@@ -177,8 +177,8 @@ yt-live-chat-text-message-renderer[author-is-owner] {
 
 #image-and-message.yt-live-chat-text-message-renderer .emoji.yt-live-chat-text-message-renderer {
   /* B站表情有不是正方形的 */
-  width: auto;
-  height: var(--yt-live-chat-emoji-size);
+  height: auto;
+  width: var(--yt-live-chat-emoji-size);
   margin: -1px 2px 1px 2px;
   vertical-align: middle;
 }

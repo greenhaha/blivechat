@@ -54,6 +54,7 @@
                 >
                 <img :key="contentIndex" v-else-if="content.type === CONTENT_TYPE_EMOTICON"
                   class="emoji yt-formatted-string style-scope yt-live-chat-text-message-renderer"
+                  width="120px"
                   :src="content.url" :alt="content.text" :shared-tooltip-text="content.text" :id="`emoji-${content.text}`"
                 >
               </template>
@@ -102,9 +103,9 @@
                 <img :key="contentIndex" v-else-if="content.type === CONTENT_TYPE_IMAGE"
                   class="image yt-formatted-string style-scope yt-live-chat-text-message-renderer"
                   :style="`display: ${content.align};`"
-                  width="auto"
+                  height="auto"
                   :src="content.url" :alt="content.text" :shared-tooltip-text="content.text" :id="`image-${content.text}`"
-                  :height="content.height"
+                  :width="content.height"
                   :display="content.align"
                 >
                 <img :key="contentIndex" v-else-if="content.type === CONTENT_TYPE_EMOTICON"
