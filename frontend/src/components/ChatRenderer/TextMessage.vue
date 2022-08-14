@@ -23,6 +23,8 @@
               <span id="author-name" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{
                 authorName
                 }}<!-- 这里是已验证勋章 -->
+                <span id="author-name1" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{authorName.substr(0,1)}}</span>
+                <span id="author-name2" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{authorName.substr(0,2)}}</span>
                 <span id="chip-badges" class="style-scope yt-live-chat-author-chip"></span>
               </span>
               <span id="chat-medal" class="style-scope yt-live-chat-author-chip">
@@ -77,6 +79,8 @@
               <span id="author-name" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{
                 authorName
                 }}<!-- 这里是已验证勋章 -->
+                <span id="author-name1" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{authorName.substr(0,1)}}</span>
+                <span id="author-name2" dir="auto" class="style-scope yt-live-chat-author-chip" :type="authorTypeText">{{authorName.substr(0,2)}}</span>
                 <span id="chip-badges" class="style-scope yt-live-chat-author-chip"></span>
               </span>
               <span id="chat-medal" class="style-scope yt-live-chat-author-chip">
