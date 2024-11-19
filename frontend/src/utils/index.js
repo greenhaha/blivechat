@@ -21,7 +21,7 @@ export function toInt(val, _default) {
   return res
 }
 
-export function toFloat (val, _default) {
+export function toFloat(val, _default) {
   let res = parseFloat(val)
   if (isNaN(res)) {
     res = _default
@@ -31,7 +31,7 @@ export function toFloat (val, _default) {
 
 export function formatCurrency(price) {
   return new Intl.NumberFormat('zh-CN', {
-    minimumFractionDigits: price < 100 ? 1 : 0
+    minimumFractionDigits: price < 100 ? 2 : 0
   }).format(price)
 }
 

@@ -19,7 +19,31 @@
               id="chat-items" class="style-scope yt-live-chat-item-list-renderer"
             >
               <template v-for="message in messages">
-                <text-message :key="message.id" v-if="message.type === MESSAGE_TYPE_TEXT"
+                <interact-message :key="message.id" v-if="message.type === MESSAGE_TYPE_INTERACT"
+                  class="style-scope yt-live-chat-item-list-renderer"
+                  :style="
+                    `--x-offset:${message.xOffset}px;
+                    --y-offset:${message.yOffset}px;
+                    --float-distance-x: ${message.floatDistanceX}px;
+                    --float-distance-y: ${message.floatDistanceY}px;
+                    --float-time: ${getFloatTime}s;`
+                  "
+                  :randomXOffset="randomXOffset"
+                  :randomYOffset="randomYOffset"
+                  :time="message.time"
+                  :avatarUrl="message.avatarUrl"
+                  :authorName="message.authorName"
+
+                  :medalName="message.medalName"
+                  :medalLevel="message.medalLevel"
+                  :isFanGroup="message.isFanGroup"
+
+                  :privilegeType="message.privilegeType"
+                  :msgType="message.msgType"
+
+                  :isDelete="message.isDelete"
+                ></interact-message>
+                <text-message :key="message.id" v-else-if="message.type === MESSAGE_TYPE_TEXT"
                   class="style-scope yt-live-chat-item-list-renderer"
                   :style="
                     `--x-offset:${message.xOffset}px;
@@ -81,6 +105,9 @@
                   :time="message.time"
                   :avatarUrl="message.avatarUrl"
                   :authorName="getShowAuthorName(message)"
+                  :price="message.price"
+                  :guardNum="message.guardNum"
+                  :guardUnit="message.guardUnit"
                   :privilegeType="message.privilegeType"
                   :title="message.title"
                   :isDelete="message.isDelete"
@@ -101,7 +128,7 @@
                   :avatarUrl="message.avatarUrl"
                   :authorName="getShowAuthorName(message)"
                   :price="message.price"
-                  :content="getShowContent(message)" 
+                  :content="getShowContent(message)"
                   :isDelete="message.isDelete"
                 ></paid-message>
               </template>
@@ -116,6 +143,7 @@
 <script>
 import * as chatConfig from '@/api/chatConfig'
 import Ticker from './Ticker'
+import InteractMessage from './InteractMessage'
 import TextMessage from './TextMessage'
 import MembershipItem from './MembershipItem'
 import PaidMessage from './PaidMessage'
@@ -124,6 +152,7 @@ import * as constants from './constants'
 
 // 只有要添加的消息需要平滑
 const NEED_SMOOTH_MESSAGE_TYPES = [
+  constants.MESSAGE_TYPE_INTERACT,
   constants.MESSAGE_TYPE_TEXT,
   constants.MESSAGE_TYPE_GIFT,
   constants.MESSAGE_TYPE_MEMBER,
@@ -143,11 +172,16 @@ export default {
   name: 'ChatRenderer',
   components: {
     Ticker,
+    InteractMessage,
     TextMessage,
     MembershipItem,
     PaidMessage
   },
   props: {
+    customCss: {
+      type: String,
+      default: chatConfig.DEFAULT_CONFIG.customCss
+    },
     showGiftInfo: {
       type: Boolean,
       default: chatConfig.DEFAULT_CONFIG.showGiftInfo
@@ -203,6 +237,7 @@ export default {
   },
   data() {
     return {
+      MESSAGE_TYPE_INTERACT: constants.MESSAGE_TYPE_INTERACT,
       MESSAGE_TYPE_TEXT: constants.MESSAGE_TYPE_TEXT,
       MESSAGE_TYPE_GIFT: constants.MESSAGE_TYPE_GIFT,
       MESSAGE_TYPE_MEMBER: constants.MESSAGE_TYPE_MEMBER,
@@ -236,7 +271,7 @@ export default {
   },
   computed: {
     getFloatTime() {
-      return this.floatTime;
+      return this.floatTime
     },
     canScrollToBottom() {
       return this.atBottom/* || this.allowScroll */
@@ -245,7 +280,10 @@ export default {
   watch: {
     canScrollToBottom(val) {
       this.cantScrollStartTime = val ? null : new Date()
-    }
+    },
+    customCss() {
+      this.setCustomCss()
+    },
   },
   mounted() {
     this.scrollToBottom()
@@ -260,14 +298,14 @@ export default {
   },
   methods: {
     updateProgress() {
-      if(this.pinTime == 0) {
+      if (this.pinTime == 0) {
         return
       }
       
       this.curTime = new Date()
       for (let i = 0; i < this.messages.length;) {
         let message = this.messages[i]
-        if ((this.curTime - message.addTime) / (1000) >= this.pinTime) {
+        if ((this.curTime - message.addTime) / 1000 >= this.pinTime) {
           // console.log('删除消息')
           this.messages.splice(i, 1)
         } else {
@@ -276,13 +314,13 @@ export default {
       }
     },
     async onMessageLeave(el, done) {
-      let time_interval = this.estimatedEnqueueInterval;
+      let time_interval = this.estimatedEnqueueInterval
       let curTime = new Date()
       
       // console.log(curTime - this.lastEnqueueTime)
       // console.log(time_interval)
       el.classList.add('leaving')
-      if(time_interval < 1650 && curTime - this.lastEnqueueTime < 2000) {
+      if (time_interval < 1650 && curTime - this.lastEnqueueTime < 2000) {
         // console.log('消息过快，省略动画')
         done()
         await this.$nextTick()
@@ -293,7 +331,7 @@ export default {
       this.onLeave = true
 
       // 等 100ms 后执行
-      window.setTimeout(() =>  {
+      window.setTimeout(() => {
         el.classList.add('collapsing')
         done()
         this.$refs.itemOffset.classList.add('collapsing')
@@ -369,7 +407,7 @@ export default {
           return true
         } else {
           // 如果新消息的时间间隔上一条消息超过 mergeSameUserDanmakuInterval 秒，则不合并
-          if(new Date(time * 1000) - message.time > this.mergeSameUserDanmakuInterval * 1000) {
+          if (new Date(time * 1000) - message.time > this.mergeSameUserDanmakuInterval * 1000) {
             return true
           }
           // FIXME: 翻译bug
@@ -464,15 +502,19 @@ export default {
       } else {
         let curTime = new Date()
         let interval = curTime - this.lastEnqueueTime
-        // 让发消息速度变化不要太频繁
-        if (interval > 1000) {
+        // 真实的进队列时间间隔模式大概是这样：2500, 300, 300, 300, 2500, 300, ...
+        // B站消息有缓冲，会一次发多条消息。这里把波峰视为发送了一次真实的WS消息，所以要过滤掉间隔太小的
+        if (interval > 1000 || this.enqueueIntervals.length < 5) {
           this.enqueueIntervals.push(interval)
           if (this.enqueueIntervals.length > 5) {
             this.enqueueIntervals.splice(0, this.enqueueIntervals.length - 5)
           }
+          // 这边估计得尽量大，只要不太早把消息缓冲发完就是平滑的。有MESSAGE_MAX_INTERVAL保底，不会让消息延迟太大
+          // 其实可以用单调队列求最大值，偷懒不写了
           this.estimatedEnqueueInterval = Math.max(...this.enqueueIntervals)
-          this.lastEnqueueTime = curTime
         }
+        // 上次入队时间还是要设置，否则会太早把消息缓冲发完，然后较长时间没有新消息
+        this.lastEnqueueTime = curTime
       }
 
       // 把messages分成messageGroup，每个组里最多有1个需要平滑的消息
@@ -569,6 +611,7 @@ export default {
 
       for (let message of messageGroup) {
         switch (message.type) {
+        case constants.MESSAGE_TYPE_INTERACT:
         case constants.MESSAGE_TYPE_TEXT:
         case constants.MESSAGE_TYPE_GIFT:
         case constants.MESSAGE_TYPE_MEMBER:
@@ -595,7 +638,7 @@ export default {
         addTime: new Date() // 添加一个本地时间给Ticker用，防止本地时间和服务器时间相差很大的情况
       }
       //* 判断是否要加入到弹幕队列，如果是打赏但价格低于最低打赏价格则不加入
-      if (message.price == undefined || message.price >= this.minGiftPrice ) {
+      if (message.price == undefined || message.price >= this.minGiftPrice) {
         this.messagesBuffer.push(message)
       }
 
@@ -649,7 +692,7 @@ export default {
       if (this.messagesBuffer.length <= 0) {
         return
       }
-      if(this.onLeave) {
+      if (this.onLeave) {
         // console.log('删除动画进行中')
         return
       }
@@ -665,9 +708,9 @@ export default {
       // 当buffer和现存队列中的消息总数超过maxNumber（最大弹幕数的时候），给旧弹幕加上delete属性，让CSS做消失动画
       let deleteNum = Math.max(this.messages.length + this.messagesBuffer.length - this.maxNumber, 0)
       if (deleteNum > 0 && this.fadeOutNum > 0) {
-        for(let i = 0; i < this.messages.length; i++) {
-          if(i < deleteNum) {
-            this.messages[i].isDelete = true;
+        for (let i = 0; i < this.messages.length; i++) {
+          if (i < deleteNum) {
+            this.messages[i].isDelete = true
           }
         }
         await this.$nextTick()
@@ -696,7 +739,7 @@ export default {
       this.preinsertHeight = this.$refs.items.clientHeight
     },
     showNewMessages() {
-      if(this.randomXOffset || this.randomYOffset) {
+      if (this.randomXOffset || this.randomYOffset) {
         return
       }
       let hasScrollBar = this.$refs.items.clientHeight > this.$refs.scroller.clientHeight
@@ -711,7 +754,6 @@ export default {
       this.scrollPixelsRemaining += this.$refs.items.clientHeight - this.preinsertHeight
       
       this.scrollToBottom()
-
       
 
       // 计算是否平滑滚动、剩余时间
@@ -806,6 +848,24 @@ export default {
       if (this.cantScrollStartTime) {
         this.cantScrollStartTime = new Date()
       }
+    },
+    setCustomCss() {
+      // check if custom css already exists
+      let customCss = document.querySelector('#custom-css')
+      if (customCss) {
+        customCss.href = this.customCss
+        if (this.customCss === '') {
+          customCss.remove()
+        }
+      } else {
+        // create custom css, add to yt-live-chat-renderer
+        let link = document.createElement('link')
+        link.id = 'custom-css'
+        link.rel = 'stylesheet'
+        link.href = this.customCss
+        document.head.appendChild(link)
+      }
+     
     }
   }
 }

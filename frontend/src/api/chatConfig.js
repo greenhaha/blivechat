@@ -3,9 +3,13 @@ import _ from 'lodash'
 import { mergeConfig } from '@/utils'
 
 export const DEFAULT_CONFIG = {
+  customCss: '',
   minGiftPrice: 0, // ￥0.0
   minTickerPrice: 0.1, // ￥0.1
   showDanmaku: true,
+  showInteractWordEnter: false,
+  showInteractWordFollow: false,
+  showInteractWordShare: false,
   showTranslateDanmakuOnly: false,
   allowTextColorSetting: true,
   blockTranslateDanmaku: false,
@@ -39,7 +43,12 @@ export const DEFAULT_CONFIG = {
   pinTime: 0,
 
   useLocalEmoticonSetting: false,
-  autoRenderOfficialEmoji: true,
+  autoRenderOfficialSmallEmoji: true,
+  autoRenderOfficialGeneralEmoji: true,
+  autoRenderStreamerEmoji: true,
+  autoRenderPersonalEmoji: true,
+
+
   isGreedyMatch: true,
   isSkipSameImage: false,
   imageShowType: 0,
@@ -52,6 +61,7 @@ export const DEFAULT_CONFIG = {
   blockNotMobileVerified: false,
   blockKeywords: '',
   blockUsers: '',
+  blockUsersByKeywords: '',
   blockMedalLevel: 0,
 
   minDanmakuInterval: 400,
@@ -631,7 +641,6 @@ export function getLocalConfig() {
   }
 }
 
-// FIXME: 前端上传表情包设置
 export function sanitizeConfig(config) {
   let newEmoticons = []
   if (config.emoticons instanceof Array) {

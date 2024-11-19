@@ -1,3 +1,5 @@
+import * as chat from '.'
+
 const COMMAND_HEARTBEAT = 0
 const COMMAND_JOIN_ROOM = 1
 const COMMAND_ADD_TEXT = 2
@@ -6,16 +8,16 @@ const COMMAND_ADD_MEMBER = 4
 const COMMAND_ADD_SUPER_CHAT = 5
 const COMMAND_DEL_SUPER_CHAT = 6
 const COMMAND_UPDATE_TRANSLATION = 7
+const COMMAND_FATAL_ERROR = 8
 
 // const CONTENT_TYPE_TEXT = 0
 const CONTENT_TYPE_EMOTICON = 1
 
-const HEARTBEAT_INTERVAL = 10 * 1000
-const RECEIVE_TIMEOUT = HEARTBEAT_INTERVAL + (5 * 1000)
+const RECEIVE_TIMEOUT = 15 * 1000
 
 export default class ChatClientRelay {
-  constructor(roomId, autoTranslate) {
-    this.roomId = roomId
+  constructor(roomKey, autoTranslate) {
+    this.roomKey = roomKey
     this.autoTranslate = autoTranslate
 
     this.onAddText = null
@@ -25,10 +27,11 @@ export default class ChatClientRelay {
     this.onDelSuperChat = null
     this.onUpdateTranslation = null
 
+    this.onFatalError = null
+
     this.websocket = null
     this.retryCount = 0
     this.isDestroying = false
-    this.heartbeatTimerId = null
     this.receiveTimeoutTimerId = null
   }
 
@@ -48,9 +51,7 @@ export default class ChatClientRelay {
       return
     }
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-    // 开发时使用localhost:12450
-    const host = process.env.NODE_ENV === 'development' ? 'localhost:12450' : window.location.host
-    const url = `${protocol}://${host}/api/chat`
+    const url = `${protocol}://${window.location.host}/api/chat`
     this.websocket = new WebSocket(url)
     this.websocket.onopen = this.onWsOpen.bind(this)
     this.websocket.onclose = this.onWsClose.bind(this)
@@ -58,24 +59,16 @@ export default class ChatClientRelay {
   }
 
   onWsOpen() {
-    this.retryCount = 0
     this.websocket.send(JSON.stringify({
       cmd: COMMAND_JOIN_ROOM,
       data: {
-        roomId: this.roomId,
+        roomKey: this.roomKey,
         config: {
           autoTranslate: this.autoTranslate
         }
       }
     }))
-    this.heartbeatTimerId = window.setInterval(this.sendHeartbeat.bind(this), HEARTBEAT_INTERVAL)
     this.refreshReceiveTimeoutTimer()
-  }
-
-  sendHeartbeat() {
-    this.websocket.send(JSON.stringify({
-      cmd: COMMAND_HEARTBEAT
-    }))
   }
 
   refreshReceiveTimeoutTimer() {
@@ -97,10 +90,6 @@ export default class ChatClientRelay {
 
   onWsClose() {
     this.websocket = null
-    if (this.heartbeatTimerId) {
-      window.clearInterval(this.heartbeatTimerId)
-      this.heartbeatTimerId = null
-    }
     if (this.receiveTimeoutTimerId) {
       window.clearTimeout(this.receiveTimeoutTimerId)
       this.receiveTimeoutTimerId = null
@@ -110,15 +99,26 @@ export default class ChatClientRelay {
       return
     }
     console.warn(`掉线重连中${++this.retryCount}`)
-    window.setTimeout(this.wsConnect.bind(this), 1000)
+    window.setTimeout(this.wsConnect.bind(this), this.getReconnectInterval())
+  }
+
+  getReconnectInterval() {
+    return Math.min(
+      1000 + ((this.retryCount - 1) * 2000),
+      10 * 1000
+    )
   }
 
   onWsMessage(event) {
-    this.refreshReceiveTimeoutTimer()
-
     let { cmd, data } = JSON.parse(event.data)
     switch (cmd) {
     case COMMAND_HEARTBEAT: {
+      this.refreshReceiveTimeoutTimer()
+
+      // 不能由定时器触发发心跳包，因为浏览器会把不活动页面的定时器调到1分钟以上
+      this.websocket.send(JSON.stringify({
+        cmd: COMMAND_HEARTBEAT
+      }))
       break
     }
     case COMMAND_ADD_TEXT: {
@@ -133,14 +133,15 @@ export default class ChatClientRelay {
         emoticon = contentTypeParams[0]
       }
 
+      let content = data[4]
       data = {
         avatarUrl: data[0],
         timestamp: data[1],
         authorName: data[2],
         authorType: data[3],
-        content: data[4],
+        content: content,
         privilegeType: data[5],
-        isGiftDanmaku: Boolean(data[6]),
+        isGiftDanmaku: Boolean(data[6]) || chat.isGiftDanmakuByContent(content),
         authorLevel: data[7],
         isNewbie: Boolean(data[8]),
         isMobileVerified: Boolean(data[9]),
@@ -187,6 +188,19 @@ export default class ChatClientRelay {
       this.onUpdateTranslation(data)
       break
     }
+    case COMMAND_FATAL_ERROR: {
+      if (!this.onFatalError) {
+        break
+      }
+      let error = new chat.ChatClientFatalError(data.type, data.msg)
+      this.onFatalError(error)
+      break
+    }
+    }
+
+    // 至少成功处理1条消息
+    if (cmd !== COMMAND_FATAL_ERROR) {
+      this.retryCount = 0
     }
   }
 }

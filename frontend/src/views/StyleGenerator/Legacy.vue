@@ -616,6 +616,7 @@ yt-live-chat-renderer {
     },
     paddingStyle() {
       return `/* Reduce side padding */
+yt-live-chat-interact-message-renderer,
 yt-live-chat-text-message-renderer {
   padding-left: ${this.form.useBarsInsteadOfBg ? 20 : 4}px !important;
   padding-right: 4px !important;
@@ -647,23 +648,30 @@ yt-live-chat-renderer * {
     },
     userNameStyle() {
       return `/* Channel names */
+yt-live-chat-interact-message-renderer #content #author-name,
+yt-live-chat-text-message-renderer #content #author-name {
+  ${this.form.randomUserNamesColor ? `color: var(--repeated-text-color) !important; ` : ''}
+}
+yt-live-chat-interact-message-renderer #author-name[type="owner"],
+yt-live-chat-interact-message-renderer yt-live-chat-author-badge-renderer[type="owner"],
 yt-live-chat-text-message-renderer #author-name[type="owner"],
 yt-live-chat-text-message-renderer yt-live-chat-author-badge-renderer[type="owner"] {
   ${this.form.ownerUserNameColor ? `color: ${this.form.ownerUserNameColor} !important;` : ''}
 }
-yt-live-chat-text-message-renderer #content #author-name {
-  ${this.form.randomUserNamesColor ? `color: var(--repeated-text-color) !important; ` : ''}
-}
+yt-live-chat-interact-message-renderer #author-name[type="moderator"],
+yt-live-chat-interact-message-renderer yt-live-chat-author-badge-renderer[type="moderator"],
 yt-live-chat-text-message-renderer #author-name[type="moderator"],
 yt-live-chat-text-message-renderer yt-live-chat-author-badge-renderer[type="moderator"] {
   ${this.form.moderatorUserNameColor ? `color: ${this.form.moderatorUserNameColor} !important;` : ''}
 }
-
+yt-live-chat-interact-message-renderer #author-name[type="member"],
+yt-live-chat-interact-message-renderer yt-live-chat-author-badge-renderer[type="member"],
 yt-live-chat-text-message-renderer #author-name[type="member"],
 yt-live-chat-text-message-renderer yt-live-chat-author-badge-renderer[type="member"] {
   ${this.form.memberUserNameColor ? `color: ${this.form.memberUserNameColor} !important;` : ''}
 }
 
+yt-live-chat-interact-message-renderer #author-name,
 yt-live-chat-text-message-renderer #author-name {
   ${this.form.showUserNames ? '' : 'display: none !important;'}
   ${this.form.userNameColor ? `color: ${this.form.userNameColor} !important;` : ''}
@@ -679,6 +687,7 @@ yt-live-chat-text-message-renderer #author-name::after {
 }`}
 
 /* Hide badges */
+yt-live-chat-interact-message-renderer #chat-badges,
 yt-live-chat-text-message-renderer #chat-badges {
   ${this.form.showBadges ? '' : 'display: none !important;'}
   vertical-align: text-top !important;
@@ -688,17 +697,17 @@ img.yt-live-chat-author-badge-renderer, yt-icon.yt-live-chat-author-badge-render
   height: ${this.form.badgesSize}px;
 }`
     },
-      medalStyle() {
+    medalStyle() {
       return `/* Medal */
 yt-live-chat-author-medal-renderer {
-    ${this.form.showMedal ? (this.form.showOnlyOwnerMedal ? `display: none;`: `display: flex;`) : 'display: none;'}
+    ${this.form.showMedal && !this.form.showOnlyOwnerMedal ? `display: flex;` : 'display: none;'}
     
 }
 yt-live-chat-author-medal-renderer[is-fan-group] {
   ${this.form.showMedal ? `display: flex;` : ''}
 }
 #medal-name.yt-live-chat-author-medal-renderer {
-  ${this.form.showMedalName ? '' :  `visibility: hidden;
+  ${this.form.showMedalName ? '' : `visibility: hidden;
   width: 0;
   height: 0;
   padding: 0;`}
@@ -712,12 +721,14 @@ yt-live-chat-author-medal-renderer[is-fan-group] {
   height: 0;
   padding: 0;`}
   font-size: ${this.form.medalFontSize}px !important;
-  line-height: ${this.form.medalLineHeight || this.form.medalFontSize }px !important;
+  line-height: ${this.form.medalLineHeight || this.form.medalFontSize}px !important;
 }
 `
     },
     messageStyle() {
       return `/* Messages */
+yt-live-chat-interact-message-renderer #message,
+yt-live-chat-interact-message-renderer #message *,
 yt-live-chat-text-message-renderer #message,
 yt-live-chat-text-message-renderer #message * {
   ${this.form.messageColor ? `color: ${this.form.messageColor} !important;` : ''}
@@ -760,7 +771,7 @@ yt-live-chat-text-message-renderer #thread>#card:first-child #content{
 #thread>#card:first-child img.yt-img-shadow {
     visibility: visible;
     height: auto;
-}`:``}
+}` : ``}
 
 
 yt-live-chat-text-message-renderer #message {

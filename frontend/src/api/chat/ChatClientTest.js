@@ -1,15 +1,15 @@
 import { getUuid4Hex } from '@/utils'
 import * as constants from '@/components/ChatRenderer/constants'
-import * as avatar from './avatar'
+import * as chat from '.'
 
 const NAMES = [
   'xfgryujk', 'Simon', 'Il Harper', 'Kinori', 'shugen', 'yuyuyzl', '3Shain', '光羊', '黑炎', 'Misty', '孤梦星影',
   'ジョナサン・ジョースター', 'ジョセフ・ジョースター', 'ディオ・ブランドー', '空條承太郎', '博丽灵梦', '雾雨魔理沙', 'Rick Astley',
   '只熊KUMA', 'DoodleBear', '椅子_Official', '星界璃海', '玲玲', '海式policturn', '小川尚未', '梅林Kitsune', '因扎因·内比娅',
   '只熊KUMA', 'DoodleBear', '椅子_Official', '星界璃海', '玲玲', '海式policturn', '小川尚未', '梅林Kitsune', '因扎因·内比娅',
-  '只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA',
-  '只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA',
-  '只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA','只熊KUMA'
+  '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA',
+  '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA',
+  '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA', '只熊KUMA'
 
 ]
 
@@ -40,6 +40,10 @@ const SC_CONTENTS = [
 ]
 
 const CONTENTS = [
+  '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]',
+  '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]', '狗头[dog]',
+  '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]',
+  '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]', '比心捏[比心]',
   'yyds', 'yyds', 'yyds', 'yyds', 'yyds', 'yyds', 'yyds',
   '草', '草', '草', '草', '草', '草', '草', '草', '草', '草',
   '测试', '测试', '测试', '测试', '测试', '测试',
@@ -82,7 +86,37 @@ const CONTENTS = [
   '我忘不掉夏小姐了。如果不是知道了夏小姐，说不定我已经对这个世界没有留恋了', '迷えば、敗れる',
   '我忘不掉夏小姐了。如果不是知道了夏小姐，说不定我已经对这个世界没有留恋了', '迷えば、敗れる',
   'Farewell, ashen one. May the flame guide thee', '竜神の剣を喰らえ！', '竜が我が敌を喰らう！',
-  '有一说一，这件事大家懂的都懂，不懂的，说了你也不明白，不如不说', '让我看看', '我柜子动了，我不玩了'
+  '有一说一，这件事大家懂的都懂，不懂的，说了你也不明白，不如不说', '让我看看', '我柜子动了，我不玩了',
+  '草',
+  '让我看看',
+  '不要停下来啊',
+  '我不做人了，JOJO',
+  '已经没有什么好怕的了',
+  '我柜子动了，我不玩了',
+  '老板大气，老板身体健康',
+  '我醉提酒游寒山，爽滑慢舔',
+  '無駄無駄無駄無駄無駄無駄無駄無駄',
+  '欧啦欧啦欧啦欧啦欧啦欧啦欧啦欧啦',
+  '所有没好全部康复呀，我的癌也全部康复呀',
+  '嚯，朝我走过来了吗，没有选择逃跑而是主动接近我么',
+  '有一说一，这件事大家懂的都懂，不懂的，说了你也不明白，不如不说',
+  '如来来了吗？如来嘛~他真来了吗？如~来~到底来没来？如来~如来他真来了吗？如来~你看看，来没来？如~来~',
+  '迷えば、敗れる',
+  '逃げるんだよォ！',
+  '竜神の剣を喰らえ！',
+  '竜が我が敌を喰らう！',
+  '言いたいことがあるんだよ！',
+  '知らず知らず隠してた 本当の声を響かせてよほら',
+  'kksk',
+  '8888888888',
+  'Never gonna give you up',
+  'Never gonna let you down',
+  '888888888888888888888888888888',
+  'I am the storm that is approaching',
+  "I can eat glass, it doesn't hurt me",
+  'The quick brown fox jumps over the lazy dog',
+  'Farewell, ashen one. May the flame guide thee',
+  'I am the bone of my sword. Steel is my body, and fire is my blood.',
 ]
 
 // NOTE: 测试用 Emoticon
@@ -90,6 +124,59 @@ const EMOTICONS = [
   '/static/img/emoticons/233.png',
   '/static/img/emoticons/miaoa.png',
   '/static/img/emoticons/lipu.png'
+]
+
+const EMOT_INFO_LIST = [
+  {
+    "[dog]": {
+      "emoticon_id": 208,
+      "emoji": "[dog]",
+      "descript": "[dog]",
+      "url": "/static/img/emoticons/dog.png",
+      "width": 20,
+      "height": 20,
+      "emoticon_unique": "emoji_208"
+    },
+    "[比心]": {
+      "emoticon_id": 217,
+      "emoji": "[比心]",
+      "descript": "[比心]",
+      "url": "/static/img/emoticons/bixin.png",
+      "width": 20,
+      "height": 20,
+      "emoticon_unique": "emoji_217"
+    }
+  }
+]
+
+const EMOT_DETAIL_LIST = [
+  {
+    "bulge_display": 0,
+    "emoticon_unique": "official_147",
+    "height": 60,
+    "in_player_area": 1,
+    "is_dynamic": 0,
+    "url": "http://i0.hdslb.com/bfs/live/bbd9045570d0c022a984c637e406cb0e1f208aa9.png",
+    "width": 150
+  },
+  {
+    "bulge_display": 1,
+    "emoticon_unique": "room_21782115_10262",
+    "height": 162,
+    "in_player_area": 1,
+    "is_dynamic": 1,
+    "url": "http://i0.hdslb.com/bfs/live/f6126c31b95501778c120c20aa11e7cbadd3cd35.png",
+    "width": 162
+  },
+  {
+    "bulge_display": 1,
+    "emoticon_unique": "upower_[Cat_escort]",
+    "height": 20,
+    "in_player_area": 1,
+    "is_dynamic": 0,
+    "url": "http://i0.hdslb.com/bfs/emote/81784f53f5ca7004a90d316c81889d8161dc05a6.png",
+    "width": 20
+  },
 ]
 
 const AUTHOR_TYPES = [
@@ -113,34 +200,34 @@ function randGuardInfo() {
 }
 
 const GIFT_INFO_LIST = [
-  { giftName: '辣条', price: 0, totalCoin: 100, coinType: 'silver', num: 10 },
-  { giftName: '小心心', price: 0, totalCoin: 0, coinType: 'silver', num: 24 },
-  { giftName: '小心心', price: 0, totalCoin: 0, coinType: 'silver', num: 1 },
-  { giftName: 'B坷垃', price: 0, totalCoin: 9900, coinType: 'silver', num: 1 },
-  { giftName: '吃瓜', price: 0.1, totalCoin: 100, coinType: 'gold', num: 1 },
-  { giftName: '吃瓜', price: 0.1, totalCoin: 200, coinType: 'gold', num: 2 },
-  { giftName: '吃瓜', price: 0.1, totalCoin: 500, coinType: 'gold', num: 5 },
-  { giftName: '比心', price: 0.5, totalCoin: 500, coinType: 'gold', num: 1 },
-  { giftName: '比心', price: 0.5, totalCoin: 1000, coinType: 'gold', num: 2 },
-  { giftName: '冰阔落', price: 1, totalCoin: 1000, coinType: 'gold', num: 1 },
-  { giftName: '冰阔落', price: 1, totalCoin: 3000, coinType: 'gold', num: 3 },
-  { giftName: '冰阔落', price: 1, totalCoin: 5000, coinType: 'gold', num: 5 },
-  { giftName: '给大佬递茶', price: 2, totalCoin: 10000, coinType: 'gold', num: 5 },
-  { giftName: '给大佬递茶', price: 2, totalCoin: 20000, coinType: 'gold', num: 10 },
-  { giftName: '打榜', price: 2, totalCoin: 2000, coinType: 'gold', num: 1 },
-  { giftName: '打榜', price: 2, totalCoin: 6000, coinType: 'gold', num: 3 },
-  { giftName: '打榜', price: 2, totalCoin: 26000, coinType: 'gold', num: 13 },
-  { giftName: '喵娘', price: 5.2, totalCoin: 5200, coinType: 'gold', num: 1 },
-  { giftName: '喵娘', price: 5.2, totalCoin: 52000, coinType: 'gold', num: 10 },
-  { giftName: 'B坷垃', price: 9.9, totalCoin: 9900, coinType: 'gold', num: 1 },
-  { giftName: '礼花', price: 28, totalCoin: 28000, coinType: 'gold', num: 1 },
-  { giftName: '礼花', price: 28, totalCoin: 280000, coinType: 'gold', num: 10 },
-  { giftName: '花式夸夸', price: 39, totalCoin: 39000, coinType: 'gold', num: 1 },
-  { giftName: '花式夸夸', price: 39, totalCoin: 390000, coinType: 'gold', num: 10 },
-  { giftName: '天空之翼', price: 100, totalCoin: 100000, coinType: 'gold', num: 1 },
-  { giftName: '摩天大楼', price: 450, totalCoin: 450000, coinType: 'gold', num: 1 },
-  { giftName: '小电视飞船', price: 1245, totalCoin: 1245000, coinType: 'gold', num: 1 },
-  { giftName: '小电视飞船', price: 1245, totalCoin: 12450000, coinType: 'gold', num: 10 }
+  { giftName: '辣条', price: 0, totalCoin: 100, coinType: 'silver', paid: false, num: 10 },
+  { giftName: '小心心', price: 0, totalCoin: 0, coinType: 'silver', paid: false, num: 24 },
+  { giftName: '小心心', price: 0, totalCoin: 0, coinType: 'silver', paid: false, num: 1 },
+  { giftName: 'B坷垃', price: 0, totalCoin: 9900, coinType: 'silver', paid: false, num: 1 },
+  { giftName: '吃瓜', price: 0.1, totalCoin: 100, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '吃瓜', price: 0.1, totalCoin: 200, coinType: 'gold', paid: true, num: 2 },
+  { giftName: '吃瓜', price: 0.1, totalCoin: 500, coinType: 'gold', paid: true, num: 5 },
+  { giftName: '比心', price: 0.5, totalCoin: 500, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '比心', price: 0.5, totalCoin: 1000, coinType: 'gold', paid: true, num: 2 },
+  { giftName: '冰阔落', price: 1, totalCoin: 1000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '冰阔落', price: 1, totalCoin: 3000, coinType: 'gold', paid: true, num: 3 },
+  { giftName: '冰阔落', price: 1, totalCoin: 5000, coinType: 'gold', paid: true, num: 5 },
+  { giftName: '给大佬递茶', price: 2, totalCoin: 10000, coinType: 'gold', paid: true, num: 5 },
+  { giftName: '给大佬递茶', price: 2, totalCoin: 20000, coinType: 'gold', paid: true, num: 10 },
+  { giftName: '打榜', price: 2, totalCoin: 2000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '打榜', price: 2, totalCoin: 6000, coinType: 'gold', paid: true, num: 3 },
+  { giftName: '打榜', price: 2, totalCoin: 26000, coinType: 'gold', paid: true, num: 13 },
+  { giftName: '喵娘', price: 5.2, totalCoin: 5200, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '喵娘', price: 5.2, totalCoin: 52000, coinType: 'gold', paid: true, num: 10 },
+  { giftName: 'B坷垃', price: 9.9, totalCoin: 9900, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '礼花', price: 28, totalCoin: 28000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '礼花', price: 28, totalCoin: 280000, coinType: 'gold', paid: true, num: 10 },
+  { giftName: '花式夸夸', price: 39, totalCoin: 39000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '花式夸夸', price: 39, totalCoin: 390000, coinType: 'gold', paid: true, num: 10 },
+  { giftName: '天空之翼', price: 100, totalCoin: 100000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '摩天大楼', price: 450, totalCoin: 450000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '小电视飞船', price: 1245, totalCoin: 1245000, coinType: 'gold', paid: true, num: 1 },
+  { giftName: '小电视飞船', price: 1245, totalCoin: 12450000, coinType: 'gold', paid: true, num: 10 }
 
 ]
 
@@ -148,7 +235,29 @@ const SC_PRICES = [
   30, 50, 100, 200, 500, 1000, 2000
 ]
 
+const GUARD_UNIT = ['月', '年']
+
 const MESSAGE_GENERATORS = [
+  // 进场
+  {
+    weight: 10,
+    value() {
+      return {
+        type: constants.MESSAGE_TYPE_INTERACT,
+        message: {
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
+          timestamp: new Date().getTime() / 1000,
+          msgType: randInt(1, 5),
+          authorName: randomChoose(NAMES),
+          privilegeType: randInt(0, 3),
+          medalName: randomChoose(MEDAL_NAME),
+          medalLevel: randInt(1, 40),
+          isFanGroup: Boolean(Math.round(Math.random())),
+          id: getUuid4Hex(),
+        }
+      }
+    }
+  },
   // 文字
   {
     weight: 10,
@@ -157,7 +266,7 @@ const MESSAGE_GENERATORS = [
         type: constants.MESSAGE_TYPE_TEXT,
         message: {
           ...randGuardInfo(),
-          avatarUrl: avatar.DEFAULT_AVATAR_URL,
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
           timestamp: new Date().getTime() / 1000,
           authorName: randomChoose(NAMES),
           content: randomChoose(CONTENTS),
@@ -170,7 +279,8 @@ const MESSAGE_GENERATORS = [
           isFanGroup: Boolean(Math.round(Math.random())),
           id: getUuid4Hex(),
           translation: '',
-          emoticon: null
+          emoticon: null,
+          emots: randomChoose(EMOT_INFO_LIST),
         }
       }
     }
@@ -183,7 +293,7 @@ const MESSAGE_GENERATORS = [
         type: constants.MESSAGE_TYPE_TEXT,
         message: {
           ...randGuardInfo(),
-          avatarUrl: avatar.DEFAULT_AVATAR_URL,
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
           timestamp: new Date().getTime() / 1000,
           authorName: randomChoose(NAMES),
           content: randomChoose(OFFICIAL_EMOJI_NAME),
@@ -194,7 +304,8 @@ const MESSAGE_GENERATORS = [
           medalLevel: randInt(0, 40),
           id: getUuid4Hex(),
           translation: '',
-          emoticon: randomChoose(EMOTICONS)
+          emoticon: randomChoose(EMOTICONS),
+          emoticonDetail: randomChoose(EMOT_DETAIL_LIST),
         }
       }
     }
@@ -208,10 +319,10 @@ const MESSAGE_GENERATORS = [
         message: {
           ...randomChoose(GIFT_INFO_LIST),
           id: getUuid4Hex(),
-          avatarUrl: avatar.DEFAULT_AVATAR_URL,
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
           timestamp: new Date().getTime() / 1000,
-          authorName: randomChoose(NAMES)
-          // num: 1
+          authorName: randomChoose(NAMES),
+          num: 1
         }
       }
     }
@@ -224,7 +335,7 @@ const MESSAGE_GENERATORS = [
         type: constants.MESSAGE_TYPE_SUPER_CHAT,
         message: {
           id: getUuid4Hex(),
-          avatarUrl: avatar.DEFAULT_AVATAR_URL,
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
           timestamp: new Date().getTime() / 1000,
           authorName: randomChoose(NAMES),
           price: randomChoose(SC_PRICES),
@@ -242,10 +353,12 @@ const MESSAGE_GENERATORS = [
         type: constants.MESSAGE_TYPE_MEMBER,
         message: {
           id: getUuid4Hex(),
-          avatarUrl: avatar.DEFAULT_AVATAR_URL,
+          avatarUrl: chat.DEFAULT_AVATAR_URL,
           timestamp: new Date().getTime() / 1000,
           authorName: randomChoose(NAMES),
-          privilegeType: randInt(1, 3)
+          privilegeType: randInt(1, 3),
+          guardNum: randInt(1, 100),
+          guardUnit: randomChoose(GUARD_UNIT)
         }
       }
     }
@@ -288,13 +401,15 @@ export default class ChatClientTest {
   constructor(minSleepTime, maxSleepTime) {
     this.minSleepTime = minSleepTime
     this.maxSleepTime = minSleepTime <= maxSleepTime ? maxSleepTime : minSleepTime
-
     this.onAddText = null
     this.onAddGift = null
     this.onAddMember = null
     this.onAddSuperChat = null
     this.onDelSuperChat = null
     this.onUpdateTranslation = null
+    this.onInteractWord = null
+
+    this.onFatalError = null
 
     this.timerId = null
   }
@@ -311,7 +426,14 @@ export default class ChatClientTest {
   }
 
   refreshTimer() {
-    this.timerId = window.setTimeout(this.onTimeout.bind(this), randInt(this.minSleepTime, this.maxSleepTime))
+    // 模仿B站的消息间隔模式
+    let sleepTime
+    if (randInt(0, 4) == 0) {
+      sleepTime = randInt(1000, 2000)
+    } else {
+      sleepTime = randInt(0, 400)
+    }
+    this.timerId = window.setTimeout(this.onTimeout.bind(this), sleepTime)
   }
 
   onTimeout() {
@@ -319,6 +441,9 @@ export default class ChatClientTest {
 
     let { type, message } = randomChoose(MESSAGE_GENERATORS)()
     switch (type) {
+    case constants.MESSAGE_TYPE_INTERACT:
+      this.onInteractWord(message)
+      break
     case constants.MESSAGE_TYPE_TEXT:
       this.onAddText(message)
       break

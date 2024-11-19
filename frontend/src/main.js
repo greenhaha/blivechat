@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import {
-  Aside, Autocomplete, Badge, Button, ButtonGroup, Card, Col, ColorPicker, Container, Divider, Form, FormItem, Image,
-  Input, Main, Menu, MenuItem, Message, Option, OptionGroup, Radio, RadioGroup, Row, Select, Scrollbar,
+  Alert, Aside, Autocomplete, Badge, Button, ButtonGroup, Card, Col, ColorPicker, Container, Divider, Form, FormItem, Image,
+  Input, Link, Main, Menu, MenuItem, Message, Option, OptionGroup, Radio, RadioGroup, Row, Select, Scrollbar,
   Slider, Submenu, Switch, Table, TableColumn, TabPane, Tabs, Tooltip, MessageBox
 } from 'element-ui'
 import axios from 'axios'
@@ -16,14 +16,11 @@ import Help from './views/Help'
 import Room from './views/Room'
 import NotFound from './views/NotFound'
 
-if (process.env.NODE_ENV === 'development') {
-  // 开发时使用localhost:12450
-  axios.defaults.baseURL = 'http://localhost:12450'
-}
 axios.defaults.timeout = 10 * 1000
 
 Vue.use(VueRouter)
 // 初始化element
+Vue.use(Alert)
 Vue.use(Aside)
 Vue.use(Autocomplete)
 Vue.use(Badge)
@@ -38,6 +35,7 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Image)
 Vue.use(Input)
+Vue.use(Link)
 Vue.use(Main)
 Vue.use(Menu)
 Vue.use(MenuItem)
@@ -71,7 +69,7 @@ const router = new VueRouter({
       path: '/',
       component: Layout,
       children: [
-        { path: '', component: Home },
+        { path: '', name: 'home', component: Home },
         { path: 'stylegen', name: 'stylegen', component: StyleGenerator },
         { path: 'help', name: 'help', component: Help }
       ]
@@ -83,15 +81,22 @@ const router = new VueRouter({
       props: route => ({ strConfig: route.query })
     },
     {
-      path: '/room/:roomId',
+      path: '/room/:roomKeyValue',
       name: 'room',
       component: Room,
       props(route) {
-        let roomId = parseInt(route.params.roomId)
-        if (isNaN(roomId)) {
-          roomId = null
+        let roomKeyType = parseInt(route.query.roomKeyType) || 1
+        if (roomKeyType < 1 || roomKeyType > 2) {
+          roomKeyType = 1
         }
-        return { roomId, strConfig: route.query }
+
+        let roomKeyValue = route.params.roomKeyValue
+        if (roomKeyType === 1) {
+          roomKeyValue = parseInt(roomKeyValue) || null
+        } else {
+          roomKeyValue = roomKeyValue || null
+        }
+        return { roomKeyType, roomKeyValue, strConfig: route.query }
       }
     },
     { path: '*', component: NotFound }

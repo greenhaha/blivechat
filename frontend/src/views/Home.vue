@@ -1,55 +1,133 @@
 <template>
   <div>
     <p>
-      <el-form :model="form" ref="form" label-width="150px" :rules="{
-        roomId: [
-          {required: true, message: $t('home.roomIdEmpty'), trigger: 'blur'},
-          {type: 'integer', min: 1, message: $t('home.roomIdInteger'), trigger: 'blur'}
-        ]
-      }">
+      <el-form :model="form" ref="form" label-width="150px">
         <el-tabs type="border-card">
           <el-tab-pane :label="$t('home.general')">
-            <el-form-item :label="$t('home.roomId')" required prop="roomId">
-              <el-input v-model.number="form.roomId" type="number" min="1"></el-input>
+            <template v-if="form.roomKeyType === 1">
+              <p>
+                <el-alert :title="$t('home.useAuthCodeWarning')" type="warning" show-icon :closable="false"></el-alert>
+              </p>
+              <el-form-item
+                :label="$t('home.room')" prop="roomId" :rules="[
+                  { required: true, message: $t('home.roomIdEmpty') },
+                  { type: 'integer', min: 1, message: $t('home.roomIdInteger') }
+                ]"
+              >
+                <el-row>
+                  <el-col :span="6">
+                    <el-select v-model="form.roomKeyType" style="width: 100%">
+                      <el-option :label="$t('home.authCode')" :value="2"></el-option>
+                      <el-option :label="$t('home.roomId')" :value="1"></el-option>
+                    </el-select>
+                  </el-col>
+                  <el-col :span="18">
+                    <el-input v-model.number="form.roomId" type="number" min="1"></el-input>
+                  </el-col>
+                </el-row>
+              </el-form-item>
+            </template>
+
+            <el-form-item v-else-if="form.roomKeyType === 2"
+              :label="$t('home.room')" prop="authCode" :rules="[
+                { required: true, message: $t('home.authCodeEmpty') },
+                { pattern: /^[0-9A-Z]{12,14}$/, message: $t('home.authCodeFormatError') }
+              ]"
+            >
+              <el-row>
+                <el-col :span="6">
+                  <el-select v-model="form.roomKeyType" style="width: 100%">
+                    <el-option :label="$t('home.authCode')" :value="2"></el-option>
+                    <el-option :label="$t('home.roomId')" :value="1"></el-option>
+                  </el-select>
+                </el-col>
+                <el-col :span="18">
+                  <el-tooltip placement="top-start">
+                    <div slot="content">
+                      <!-- 不知道为什么router-link获取不到$router，还是用el-link了，不过会有一次丑陋的刷新 -->
+                      <el-link
+                        type="primary" :href="$router.resolve({ name: 'help' }).href"
+                      >{{ $t('home.howToGetAuthCode') }}</el-link>
+                    </div>
+                    <el-input v-model.number="form.authCode"></el-input>
+                  </el-tooltip>
+                </el-col>
+              </el-row>
             </el-form-item>
             <el-card shadow="never">
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="6">
                   <el-form-item>
                     <span slot="label" :title="$t('home.openSpecificTutorial')">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#fee625d8" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AEETx" target="_blank">
                         {{$t('home.showDanmaku')}}
                       </a>
                     </span>
                     <el-switch v-model="form.showDanmaku"></el-switch>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="6">
-                  <el-form-item :label="$t('home.danmakuAtBottom')" :title="$t('home.openSpecificTutorial')">
+                <el-col :xs="24" :sm="4">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#585f2fe0" target="_blank">
-                        {{$t('home.danmakuAtBottom')}}
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AEETx" target="_blank">
+                        {{$t('home.mergeSimilarDanmaku')}}
                       </a>
                     </span>
-                    <el-switch v-model="form.danmakuAtBottom"></el-switch>
+                    <el-switch v-model="form.mergeSimilarDanmaku"></el-switch>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="6">
-                  <el-form-item :label="$t('home.tickerAtButtom')" :title="$t('home.openSpecificTutorial')">
+                <el-col :xs="24" :sm="8">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#585f2fe0" target="_blank">
-                        {{$t('home.tickerAtButtom')}}
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AEETx" target="_blank">
+                        {{$t('home.maxNumber')}}
                       </a>
                     </span>
-                    <el-switch v-model="form.tickerAtButtom"></el-switch>
+                    <el-input v-model.number="form.maxNumber" type="number" min="1"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
+            </el-card>
+            <el-card shadow="never">
+              <el-row :gutter="20">
+                <el-col :xs="24" :sm="6">
+                  <el-form-item>
+                    <span slot="label" :title="$t('home.openSpecificTutorial')">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#z7YQT" target="_blank">
+                        {{$t('home.showInteractWordEnter')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.showInteractWordEnter"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item>
+                    <span slot="label" :title="$t('home.openSpecificTutorial')">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#z7YQT" target="_blank">
+                        {{$t('home.showInteractWordFollow')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.showInteractWordFollow"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item>
+                    <span slot="label" :title="$t('home.openSpecificTutorial')">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#z7YQT" target="_blank">
+                        {{$t('home.showInteractWordShare')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.showInteractWordShare"></el-switch>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-card>
+            <el-card shadow="never">
               <el-row :gutter="20">
                 <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#fee625d8" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.showSuperchat')}}
                       </a>
                     </span>
@@ -59,7 +137,7 @@
                 <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#fee625d8" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.showNewMember')}}
                       </a>
                     </span>
@@ -69,7 +147,7 @@
                 <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#fee625d8" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.showGift')}}
                       </a>
                     </span>
@@ -79,7 +157,7 @@
                 <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#fee625d8" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.showGiftInfo')}}
                       </a>
                     </span>
@@ -88,20 +166,30 @@
                 </el-col>
               </el-row>
               <el-row :gutter="20">
-                <el-col :xs="24" :sm="10">
+                <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#6cf0cceb" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
+                        {{$t('home.mergeGift')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.mergeGift"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                    <span slot="label">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.minGiftPrice')}}
                       </a>
                     </span>
                     <el-input v-model.number="form.minGiftPrice" type="number" min="0" :placeholder="$t('home.minGiftPricePlaceholder')"></el-input>
                   </el-form-item>
                 </el-col>
-                <el-col :xs="24" :sm="10">
+                <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#6cf0cceb" target="_blank">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#b9gux" target="_blank">
                         {{$t('home.minTickerPrice')}}
                       </a>
                     </span>
@@ -112,38 +200,24 @@
             </el-card>
             <el-card shadow="never">
               <el-row :gutter="20">
-                <el-col :xs="24" :sm="4">
-                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                <el-col :xs="24" :sm="6">
+                  <el-form-item :label="$t('home.danmakuAtBottom')" :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#5ff3a246" target="_blank">
-                        {{$t('home.mergeSimilarDanmaku')}}
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#BL6aV" target="_blank">
+                        {{$t('home.danmakuAtBottom')}}
                       </a>
                     </span>
-                    <el-switch v-model="form.mergeSimilarDanmaku"></el-switch>
+                    <el-switch v-model="form.danmakuAtBottom"></el-switch>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :sm="6">
-                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                  <el-form-item :label="$t('home.tickerAtButtom')" :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#5ff3a246" target="_blank">
-                        {{$t('home.mergeGift')}}
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#BL6aV" target="_blank">
+                        {{$t('home.tickerAtButtom')}}
                       </a>
                     </span>
-                    <el-switch v-model="form.mergeGift"></el-switch>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </el-card>
-            <el-card shadow="never">
-              <el-row :gutter="20">
-                <el-col :xs="24" :sm="8">
-                  <el-form-item :title="$t('home.openSpecificTutorial')">
-                    <span slot="label">
-                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#aa478443" target="_blank">
-                        {{$t('home.maxNumber')}}
-                      </a>
-                    </span>
-                    <el-input v-model.number="form.maxNumber" type="number" min="1"></el-input>
+                    <el-switch v-model="form.tickerAtButtom"></el-switch>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -352,44 +426,80 @@
                 </el-col>
               </el-row>
             </el-card>
-            
           </el-tab-pane>
 
           <el-tab-pane :label="$t('home.block')">
             <el-row :gutter="20">
               <el-col :xs="24" :sm="8">
-                <el-form-item :label="$t('home.giftDanmaku')">
+                <el-form-item :title="$t('home.openSpecificTutorial')">
+                  <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                    {{$t('home.giftDanmaku')}}
+                  </a>
                   <el-switch v-model="form.blockGiftDanmaku"></el-switch>
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
-                <el-form-item :label="$t('home.informalUser')">
+                <el-form-item :title="$t('home.openSpecificTutorial')">
+                  <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                    {{$t('home.informalUser')}}
+                  </a>
                   <el-switch v-model="form.blockNewbie"></el-switch>
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8">
-                <el-form-item :label="$t('home.unverifiedUser')">
+                <el-form-item :title="$t('home.openSpecificTutorial')">
+                  <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                    {{$t('home.unverifiedUser')}}
+                  </a>
                   <el-switch v-model="form.blockNotMobileVerified"></el-switch>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="20">
               <el-col :xs="24" :sm="12">
-                <el-form-item :label="$t('home.blockLevel')">
+                <el-form-item>
+                  <span slot="label" :title="$t('home.openSpecificTutorial')">
+                    <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                      {{$t('home.blockLevel')}}
+                    </a>
+                  </span>
                   <el-slider v-model="form.blockLevel" show-input :min="0" :max="60"></el-slider>
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="12">
-                <el-form-item :label="$t('home.blockMedalLevel')">
+                <el-form-item>
+                  <span slot="label" :title="$t('home.openSpecificTutorial')">
+                    <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                      {{$t('home.blockMedalLevel')}}
+                    </a>
+                  </span>
                   <el-slider v-model="form.blockMedalLevel" show-input :min="0" :max="40"></el-slider>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item :label="$t('home.blockKeywords')">
+            <el-form-item>
+              <span slot="label" :title="$t('home.openSpecificTutorial')">
+                <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                  {{$t('home.blockKeywords')}}
+                </a>
+              </span>
               <el-input v-model="form.blockKeywords" type="textarea" :rows="5" :placeholder="$t('home.onePerLine')"></el-input>
             </el-form-item>
-            <el-form-item :label="$t('home.blockUsers')">
+            <el-form-item>
+              <span slot="label" :title="$t('home.openSpecificTutorial')">
+                <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                  {{$t('home.blockUsers')}}
+                </a>
+              </span>
               <el-input v-model="form.blockUsers" type="textarea" :rows="5" :placeholder="$t('home.onePerLine')"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <span slot="label" :title="$t('home.openSpecificTutorial')">
+                <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                  {{$t('home.blockUsersByKeywords')}}
+                </a>
+              </span>
+              <el-input v-model="form.blockUsersByKeywords" type="textarea" :rows="5" :placeholder="$t('home.onePerLine')"></el-input>
             </el-form-item>
           </el-tab-pane>
 
@@ -486,12 +596,46 @@
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
                       <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#147119dc" target="_blank">
-                        {{$t('home.autoRenderOfficialEmoji')}}
+                        {{$t('home.autoRenderOfficialSmallEmoji')}}
                       </a>
                     </span>
-                    <el-switch v-model="form.autoRenderOfficialEmoji"></el-switch>
+                    <el-switch v-model="form.autoRenderOfficialSmallEmoji"></el-switch>
                   </el-form-item>
                 </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                    <span slot="label">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#147119dc" target="_blank">
+                        {{$t('home.autoRenderOfficialGeneralEmoji')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.autoRenderOfficialGeneralEmoji"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                    <span slot="label">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#147119dc" target="_blank">
+                        {{$t('home.autoRenderStreamerEmoji')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.autoRenderStreamerEmoji"></el-switch>
+                  </el-form-item>
+                </el-col>
+                <el-col :xs="24" :sm="6">
+                  <el-form-item :title="$t('home.openSpecificTutorial')">
+                    <span slot="label">
+                      <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#147119dc" target="_blank">
+                        {{$t('home.autoRenderPersonalEmoji')}}
+                      </a>
+                    </span>
+                    <el-switch v-model="form.autoRenderPersonalEmoji"></el-switch>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </el-card>
+            <el-card shadow="never">
+              <el-row :gutter="20">
                 <el-col :xs="24" :sm="6">
                   <el-form-item :title="$t('home.openSpecificTutorial')">
                     <span slot="label">
@@ -607,6 +751,9 @@
               <el-table-column :label="$t('home.operation')" width="170">
                 <template slot-scope="scope">
                   <el-button-group>
+                    <el-button type="primary" icon="el-icon-upload2" :disabled="!serverConfig.enableUploadFile"
+                      @click="uploadEmoticon(scope.row)"
+                    ></el-button>
                     <el-button type="danger" icon="el-icon-minus" @click="delEmoticon(scope.$index)"></el-button>
                   </el-button-group>
                 </template>
@@ -616,12 +763,22 @@
           <el-tab-pane :label="$t('home.testing')">
             <el-row :gutter="20">
               <el-col :xs="24" :sm="12">
-                <el-form-item :label="$t('home.minDanmakuInterval')">
+                <el-form-item>
+                  <span slot="label" :title="$t('home.openSpecificTutorial')">
+                    <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                      {{$t('home.minDanmakuInterval')}}
+                    </a>
+                  </span>
                   <el-slider v-model="form.minDanmakuInterval" show-input :min="35" :max="5000"></el-slider>
                 </el-form-item>
               </el-col>
               <el-col :xs="24" :sm="12">
-                <el-form-item :label="$t('home.maxDanmakuInterval')">
+                <el-form-item>
+                  <span slot="label" :title="$t('home.openSpecificTutorial')">
+                    <a href="https://www.yuque.com/doodle-irifi/ueaigm/laogg2#AtoJ3" target="_blank">
+                      {{$t('home.maxDanmakuInterval')}}
+                    </a>
+                  </span>
                   <el-slider v-model="form.maxDanmakuInterval" show-input :min="35" :max="5000"></el-slider>
                 </el-form-item>
               </el-col>
@@ -634,10 +791,25 @@
     <p>
       <el-card>
         <el-form :model="form" label-width="150px">
+          <p v-if="obsRoomUrl.length > 1024">
+            <el-alert :title="$t('home.urlTooLong')" type="warning" show-icon :closable="false"></el-alert>
+          </p>
           <el-form-item :label="$t('home.roomUrl')">
             <el-input ref="roomUrlInput" readonly :value="obsRoomUrl" style="width: calc(100% - 8em); margin-right: 1em;"></el-input>
             <el-button type="primary" icon="el-icon-copy-document" @click="copyUrl"></el-button>
           </el-form-item>
+          <el-form-item :label="$t('home.customCss')">
+            <el-input v-model="form.customCss" style="width: calc(100% - 16em); margin-right: 1em;"></el-input>
+            <el-button-group>
+              <!-- check button -->
+                <el-button type="primary" icon="el-icon-check" @click="confirmCustomCSS" style="background: #bed742; border-color: #bed742;"></el-button>
+                <el-button type="primary" icon="el-icon-upload2" :disabled="!serverConfig.enableUploadFile"
+                  @click="uploadCustomCSS"
+                ></el-button>
+                <!-- delete css setting -->
+                <el-button type="danger" icon="el-icon-minus" @click="deleteCustomCSS"></el-button>
+              </el-button-group>
+            </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="openTutorial" style="background: #bed742; border-color: #bed742;">{{$t('home.openTutorial')}}</el-button>
             <el-button type="primary" @click="enterBilibili">{{$t('home.enterBilibili')}}</el-button>
@@ -645,6 +817,7 @@
             <el-button @click="enterTestRoom">{{$t('home.enterTestRoom')}}</el-button>
             <el-button @click="exportConfig">{{$t('home.exportConfig')}}</el-button>
             <el-button @click="importConfig">{{$t('home.importConfig')}}</el-button>
+            <el-button type="danger" @click="resetConfig">{{$t('home.resetConfig')}}</el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -697,10 +870,10 @@ a:hover {
 </style>
 <script>
 import _ from 'lodash'
-import axios from 'axios'
 import download from 'downloadjs'
 
 import { mergeConfig } from '@/utils'
+import * as mainApi from '@/api/main'
 import * as chatConfig from '@/api/chatConfig'
 
 export default {
@@ -714,14 +887,26 @@ export default {
       },
       form: {
         ...chatConfig.getLocalConfig(),
-        roomId: parseInt(window.localStorage.roomId || '1')
-      }
-      
+        roomKeyType: parseInt(window.localStorage.roomKeyType || '2'),
+        roomId: parseInt(window.localStorage.roomId || '1'),
+        authCode: window.localStorage.authCode || '',
+        customCss: window.localStorage.customCss || '',
+      },
+      // 因为$refs.form.validate是异步的所以不能直接用计算属性
+      // getUnvalidatedRoomUrl -> unvalidatedRoomUrl -> updateRoomUrl -> roomUrl
+      roomUrl: '',
     }
   },
   computed: {
-    roomUrl() {
-      return this.getRoomUrl(false)
+    roomKeyValue() {
+      if (this.form.roomKeyType === 1) {
+        return this.form.roomId
+      } else {
+        return this.form.authCode
+      }
+    },
+    unvalidatedRoomUrl() {
+      return this.getUnvalidatedRoomUrl(false)
     },
     obsRoomUrl() {
       if (this.roomUrl === '') {
@@ -736,22 +921,39 @@ export default {
     }
   },
   watch: {
+    unvalidatedRoomUrl: 'updateRoomUrl',
     roomUrl: _.debounce(function() {
+      window.localStorage.roomKeyType = this.form.roomKeyType
       window.localStorage.roomId = this.form.roomId
-      let real_form = this.form
-      chatConfig.setLocalConfig(real_form)
+      window.localStorage.authCode = this.form.authCode
+      window.localStorage.customCss = this.form.customCss
+      chatConfig.setLocalConfig(this.form)
     }, 500)
   },
   mounted() {
     this.updateServerConfig()
+    this.updateRoomUrl()
   },
   methods: {
     async updateServerConfig() {
       try {
-        this.serverConfig = (await axios.get('/api/server_info')).data.config
+        this.serverConfig = (await mainApi.getServerInfo()).config
       } catch (e) {
         this.$message.error(`Failed to fetch server information: ${e}`)
+        throw e
       }
+    },
+    async updateRoomUrl() {
+      // 防止切换roomKeyType时校验的还是老规则
+      await this.$nextTick()
+      try {
+        await this.$refs.form.validate()
+      } catch {
+        this.roomUrl = ''
+        return
+      }
+      // 没有异步的校验规则，应该不需要考虑竞争条件
+      this.roomUrl = this.unvalidatedRoomUrl
     },
 
     enterBilibili() {
@@ -798,39 +1000,144 @@ export default {
         })
         .catch(() => {})
     },
-    uploadEmoticon() {
-      // TODO WIP
-    },
+    uploadEmoticon(emoticon) {
+      let input = document.createElement('input')
+      input.type = 'file'
+      input.accept = 'image/png, image/jpeg, image/jpg, image/gif'
+      input.onchange = async() => {
+        let file = input.files[0]
+        if (file.size > 1024 * 1024) {
+          this.$message.error(this.$t('home.emoticonFileTooLarge'))
+          return
+        }
 
+        let res
+        try {
+          res = await mainApi.uploadEmoticon(file)
+        } catch (e) {
+          this.$message.error(`Failed to upload: ${e}`)
+          throw e
+        }
+        emoticon.url = res.url
+      }
+      input.click()
+    },
+    confirmCustomCSS() {
+      window.localStorage.customCss = this.form.customCss
+      chatConfig.setLocalConfig(this.form)
+    },
+    uploadCustomCSS() {
+      let input = document.createElement('input')
+      input.type = 'file'
+      input.accept = 'text/css'
+      input.onchange = async() => {
+        let file = input.files[0]
+        if (file.size > 10240 * 10240 * 3) { // 300MB
+          this.$message.error(this.$t('home.cssFileTooLarge'))
+          return
+        }
+
+        let res
+        try {
+          res = await mainApi.uploadCustomCSS(file)
+        } catch (e) {
+          this.$message.error(`Failed to upload: ${e}`)
+          throw e
+        }
+        this.form.customCss = res.url
+        window.localStorage.customCss = this.form.customCss
+        chatConfig.setLocalConfig(this.form)
+      }
+      input.click()
+    },
+    deleteCustomCSS() {
+      this.$confirm('确定删除自定义CSS吗 ?你可以在 blivechat/data/custom_css 找到你上传的 CSS', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonClass: 'del-all-confirm-button'
+      })
+        .then(() => {
+          this.form.customCss = ''
+          window.localStorage.customCss = this.form.customCss
+          chatConfig.setLocalConfig(this.form)
+        })
+        .catch(() => {})
+    },
     enterRoom() {
-      window.open(this.roomUrl, `room ${this.form.roomId}`, 'menubar=0,location=0,scrollbars=0,toolbar=0,width=600,height=600')
+      window.open(this.roomUrl, `room ${this.roomKeyValue}`, 'menubar=0,location=0,scrollbars=0,toolbar=0,width=600,height=600')
     },
     enterTestRoom() {
-      window.open(this.getRoomUrl(true), 'test room', 'menubar=0,location=0,scrollbars=0,toolbar=0,width=600,height=600')
+      window.open(this.getUnvalidatedRoomUrl(true), 'test room', 'menubar=0,location=0,scrollbars=0,toolbar=0,width=600,height=600')
     },
-    getRoomUrl(isTestRoom) {
-      if (!isTestRoom && this.form.roomId === '') {
-        return ''
+    getUnvalidatedRoomUrl(isTestRoom) {
+      // 重要的字段放在前面，因为如果被截断就连接不了房间了
+      let frontFields = {
+        roomKeyType: this.form.roomKeyType
+      }
+      let backFields = {
+        lang: this.$i18n.locale,
+      }
+      let ignoredNames = new Set(['roomId', 'authCode'])
+      if (this.form.useLocalEmoticonSetting === true) {
+        ignoredNames.add('emoticons')
+      } else {
+        backFields.emoticons = JSON.stringify(this.form.emoticons)
+      }
+      let query = { ...frontFields }
+      for (let name in this.form) {
+        if (!(name in frontFields || name in backFields || ignoredNames.has(name))) {
+          query[name] = this.form[name]
+        }
       }
 
-      let query = {
-        ...this.form,
-        emoticons: JSON.stringify(this.form.emoticons),
-        lang: this.$i18n.locale
-      }
-      delete query.roomId
+      Object.assign(query, backFields)
+
+      // 去掉和默认值相同的字段，缩短URL长度
+      query = Object.fromEntries(Object.entries(query).filter(
+        ([name, value]) => {
+          let defaultValue = chatConfig.DEFAULT_CONFIG[name]
+          if (defaultValue === undefined) {
+            return true
+          }
+          if (typeof defaultValue === 'object') {
+            defaultValue = JSON.stringify(defaultValue)
+          }
+          return value !== defaultValue
+        }
+      ))
+      
 
       let resolved
       if (isTestRoom) {
         resolved = this.$router.resolve({ name: 'test_room', query })
       } else {
-        resolved = this.$router.resolve({ name: 'room', params: { roomId: this.form.roomId }, query })
+        resolved = this.$router.resolve({ name: 'room', params: { roomKeyValue: this.roomKeyValue }, query })
       }
       return `${window.location.protocol}//${window.location.host}${resolved.href}`
     },
     copyUrl() {
       this.$refs.roomUrlInput.select()
       document.execCommand('Copy')
+    },
+    resetConfig() {
+      this.$confirm('确定重置配置吗 ?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonClass: 'del-all-confirm-button'
+      })
+        .then(() => {
+          let cfg = {
+            ...chatConfig.deepCloneDefaultConfig(),
+            roomKeyType: this.form.roomKeyType ? this.form.roomKeyType : '2',
+            roomId: this.form.roomId ? this.form.roomId : '1',
+            authCode: this.form.authCode ? this.form.authCode : '',
+          }
+          chatConfig.sanitizeConfig(cfg)
+          this.form = cfg
+        })
+        .catch(() => {})
     },
     exportConfig() {
       let cfg = mergeConfig(this.form, chatConfig.DEFAULT_CONFIG)
@@ -864,7 +1171,9 @@ export default {
       chatConfig.sanitizeConfig(cfg)
       this.form = {
         ...cfg,
-        roomId: this.form.roomId
+        roomKeyType: this.form.roomKeyType,
+        roomId: this.form.roomId,
+        authCode: this.form.authCode
       }
     }
   }

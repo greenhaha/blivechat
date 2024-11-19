@@ -3,13 +3,13 @@
     <div v-show="isMobile && !hideSidebar" class="drawer-bg" @click="hideSidebar = true"></div>
     <el-aside width="230px" class="sidebar-container" :class="{ 'hide-sidebar': hideSidebar }">
       <div class="logo-container">
-        <router-link to="/">
+        <router-link :to="{ name: 'home' }">
           <img src="@/assets/img/logo.png" class="sidebar-logo">
           <h1 class="sidebar-title">blivechat</h1>
         </router-link>
       </div>
       <div class="version">
-        {{ APP_VERSION }}-220808
+        {{ APP_VERSION }}-230924
       </div>
       <div class="version">
         <a href="https://space.bilibili.com/12236936" target="_blank">只熊KUMA</a>
@@ -19,6 +19,9 @@
       </div>
       <div class="version">
         <a href="https://www.yuque.com/doodle-irifi/ueaigm/stntb3" target="_blank">下载更新/版本记录</a>
+      </div>
+      <div class="version">
+        <a href="https://github.com/xfgryujk/blivechat/releases" target="_blank">下载原版blivechat</a>
       </div>
       <sidebar></sidebar>
     </el-aside>
